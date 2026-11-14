@@ -1,19 +1,12 @@
 import 'package:equatable/equatable.dart';
 
-/// Theme options the user can pick on the Account screen.
 enum AppThemeMode { light, dark, system }
 
-/// The user's saved preferences, stored on the device with
-/// SharedPreferences so they are restored when the app relaunches.
+// User preferences kept on the device (language, theme, home city).
 class AppSettings extends Equatable {
-  /// 'en' English, 'fr' Français, 'sw' Kiswahili, 'rw' Kinyarwanda.
   final String languageCode;
-
-  /// Light, dark, or follow the phone's setting.
   final AppThemeMode themeMode;
-
-  /// City pre-filled in the "From" field on the search screen.
-  final String defaultDepartureCity;
+  final String defaultDepartureCity; // pre-fills "From" on the search screen
 
   const AppSettings({
     required this.languageCode,
@@ -21,14 +14,14 @@ class AppSettings extends Equatable {
     required this.defaultDepartureCity,
   });
 
-  /// Values used the first time the app is opened.
+  // First launch, before the user has changed anything.
   static const defaults = AppSettings(
     languageCode: 'en',
     themeMode: AppThemeMode.system,
     defaultDepartureCity: 'Kigali',
   );
 
-  /// Supported languages, in the order shown on the Account screen.
+  // English, Français, Kiswahili, Kinyarwanda - same order as the Account chips.
   static const supportedLanguages = ['en', 'fr', 'sw', 'rw'];
 
   AppSettings copyWith({
