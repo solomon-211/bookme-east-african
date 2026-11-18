@@ -17,4 +17,8 @@ abstract class TicketsRepository {
 
   /// When the cached tickets were last refreshed, or `null` if never.
   DateTime? lastSyncedAt();
+
+  /// Adds or refreshes one ticket in the on-device cache, so a ticket opened
+  /// straight after payment works offline before My Trips is ever opened.
+  Future<void> saveForOffline(Ticket ticket);
 }

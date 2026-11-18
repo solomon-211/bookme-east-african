@@ -51,6 +51,14 @@ class TicketsRepositoryImpl implements TicketsRepository {
     return uid == null ? null : _cache.lastSyncedAt(uid);
   }
 
+  @override
+  Future<void> saveForOffline(Ticket ticket) async {
+    final uid = _currentUserId();
+    if (uid == null) return;
+    final others = _cache.load(uid).where((t) => t.id != ticket.id);
+    await _cache.save(uid, [ticket, ...others]);
+  }
+
   /// A full disk must never stop the live list from showing, so cache
   /// failures are ignored; the previous cache simply stays in place.
   Future<void> _saveToCache(List<Ticket> tickets) async {
