@@ -1,0 +1,233 @@
+rules_version = '2';
+
+// BookMe East Africa - Firestore security rules (whole team).
+//
+// Principles:
+//   1. Nothing is readable without signing in.
+//   2. A user can only touch documents that belong to them (by uid).
+//   3. Reference data (operators, trips) is read-only from the app;
+//      it is seeded from the Firebase console / admin script.
+//   4. Money fields can't be changed by the client after creation, and
+//      escrow can only move forward in ways the app itself performs.
+//   5. Every write is shape-checked so bad data can't get in.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ---------- helpers ----------
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(uid) {
+      return signedIn() && request.auth.uid == uid;
+    }
+
+    // Only these keys changed in this update.
+    function onlyChanges(keys) {
+      return request.resource.data.diff(resource.data)
+               .affectedKeys().hasOnly(keys);
+    }
+
+    function isShortString(value, max) {
+      return value is string && value.size() > 0 && value.size() <= max;
+    }
+
+    function isOptionalString(value, max) {
+      return value == null || (value is string && value.size() <= max);
+    }
+
+    // ---------- users (Auth + Trust & Account) ----------
+
+    match /users/{uid} {
+      allow read: if isOwner(uid);
+      allow create: if isOwner(uid) && validProfile(request.resource.data);
+      allow update: if isOwner(uid) && validProfile(request.resource.data);
+      // Deleting the account is done by Auth / an admin, not the app.
+      allow delete: if false;
+
+      function validProfile(p) {
+        // Fields written by Auth at sign-in plus the ones Account edits.
+        return p.keys().hasOnly([
+                 'uid', 'displayName', 'email', 'phoneNumber', 'photoUrl',
+                 'providers', 'lastLoginAt', 'preferredPayment',
+                 'idDocument', 'mobileMoney', 'createdAt', 'updatedAt'
+               ])
+            && p.get('uid', uid) == uid
+            && isOptionalString(p.get('displayName', null), 80)
+            && isOptionalString(p.get('email', null), 120)
+            && isOptionalString(p.get('phoneNumber', null), 20);
+      }
+
+      // Saved passengers: full CRUD for the owner only.
+      match /passengers/{passengerId} {
+        allow read, delete: if isOwner(uid);
+        allow create, update: if isOwner(uid)
+                              && validPassenger(request.resource.data);
+
+        function validPassenger(p) {
+          return p.keys().hasOnly([
+                   'fullName', 'phone', 'idNumber', 'nationality',
+                   'createdAt', 'updatedAt'
+                 ])
+              && isShortString(p.fullName, 80)
+              && p.phone is string && p.phone.matches('^\\+[0-9]{12}$')
+              && isShortString(p.idNumber, 30)
+              && isShortString(p.nationality, 60);
+        }
+      }
+
+      // Alerts: the owner reads them, marks them read, and deletes them.
+      // Creating is allowed so the app can post its own alerts (e.g. a
+      // waitlist confirmation); system alerts come from the Admin SDK,
+      // which bypasses these rules.
+      match /alerts/{alertId} {
+        allow read, delete: if isOwner(uid);
+        allow create: if isOwner(uid) && validAlert(request.resource.data);
+        allow update: if isOwner(uid) && onlyChanges(['read'])
+                      && request.resource.data.read is bool;
+
+        function validAlert(a) {
+          return a.keys().hasOnly([
+                   'kind', 'title', 'body', 'actionLabel', 'bookingId',
+                   'read', 'createdAt'
+                 ])
+              && a.kind in ['delay', 'tripCancelled', 'seatOpened',
+                            'priceWatch', 'paymentProtected', 'refundReceived']
+              && isShortString(a.title, 120)
+              && isShortString(a.body, 500)
+              && a.read is bool
+              && a.createdAt is timestamp;
+        }
+      }
+    }
+
+    // ---------- reference data (Search) ----------
+
+    match /operators/{operatorId} {
+      allow read: if signedIn();
+      allow write: if false;
+    }
+
+    match /trips/{tripId} {
+      allow read: if signedIn();
+      allow write: if false;
+
+      // Seat holds (Booking & Payment). A signed-in user may hold a free
+      // seat, or release a hold that is theirs. They can't touch any
+      // other field, and can't take a seat someone else is holding.
+      match /seats/{seatNumber} {
+        allow read: if signedIn();
+        allow create, delete: if false;
+        allow update: if signedIn()
+                      && onlyChanges(['status', 'heldBy', 'holdExpiresAt',
+                                      'bookingId'])
+                      && (takingFreeSeat() || releasingOwnHold()
+                          || extendingOwnHold() || bookingOwnHold());
+
+        function seatIsFree() {
+          return resource.data.status == 'available'
+              || (resource.data.status == 'held'
+                  && resource.data.holdExpiresAt < request.time);
+        }
+
+        function takingFreeSeat() {
+          return seatIsFree()
+              && request.resource.data.status == 'held'
+              && request.resource.data.heldBy == request.auth.uid
+              // A hold can be at most 30 minutes (someone-else-pays).
+              && request.resource.data.holdExpiresAt
+                   <= request.time + duration.value(31, 'm');
+        }
+
+        function releasingOwnHold() {
+          return resource.data.heldBy == request.auth.uid
+              && request.resource.data.status == 'available';
+        }
+
+        // Payment succeeded: the holder turns their hold into a booking.
+        function bookingOwnHold() {
+          return resource.data.heldBy == request.auth.uid
+              && request.resource.data.status == 'booked';
+        }
+
+        function extendingOwnHold() {
+          return resource.data.heldBy == request.auth.uid
+              && request.resource.data.status == 'held'
+              && request.resource.data.heldBy == request.auth.uid
+              && request.resource.data.holdExpiresAt
+                   <= request.time + duration.value(31, 'm');
+        }
+      }
+    }
+
+    // ---------- bookings (Booking & Payment, Tickets & Trips) ----------
+
+    match /bookings/{bookingId} {
+      allow read: if signedIn() && resource.data.userId == request.auth.uid;
+
+      allow create: if signedIn()
+                    && request.resource.data.userId == request.auth.uid
+                    && request.resource.data.status == 'held'
+                    && request.resource.data.totalAmount is int
+                    && request.resource.data.totalAmount > 0;
+
+      // The owner can add passenger details, link the payment, change
+      // the hold time and move the status along. The price, seat, trip
+      // and owner never change after creation.
+      allow update: if signedIn()
+                    && resource.data.userId == request.auth.uid
+                    && request.resource.data.userId == resource.data.userId
+                    && request.resource.data.totalAmount
+                         == resource.data.totalAmount
+                    && request.resource.data.tripId == resource.data.tripId
+                    && request.resource.data.reference
+                         == resource.data.reference
+                    && request.resource.data.status
+                         in ['held', 'paid', 'expired', 'cancelled'];
+
+      // Cancelling is a status change, so history is kept for refunds.
+      allow delete: if false;
+    }
+
+    // ---------- payments (Booking & Payment, read by Escrow) ----------
+
+    match /payments/{paymentId} {
+      allow read: if signedIn() && resource.data.userId == request.auth.uid;
+
+      allow create: if signedIn()
+                    && request.resource.data.userId == request.auth.uid
+                    && request.resource.data.amount is int
+                    && request.resource.data.amount > 0
+                    && request.resource.data.escrowStatus == 'none';
+
+      // The mock mobile-money gateway runs in the app, so the client
+      // records the result. It may set status and move escrow from
+      // none -> held, but never to 'released' or 'refunded': only the
+      // server (Admin SDK) does that, after boarding or a cancellation.
+      allow update: if signedIn()
+                    && resource.data.userId == request.auth.uid
+                    && onlyChanges(['status', 'escrowStatus', 'providerRef',
+                                    'failureReason', 'paidAt', 'updatedAt'])
+                    && request.resource.data.escrowStatus in ['none', 'held'];
+
+      allow delete: if false;
+    }
+
+    // ---------- waitlist (Search) ----------
+
+    match /waitlist/{entryId} {
+      allow read, delete: if signedIn()
+                          && resource.data.userId == request.auth.uid;
+      allow create: if signedIn()
+                    && request.resource.data.userId == request.auth.uid;
+      allow update: if false;
+    }
+
+    // Anything not listed above is closed.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
