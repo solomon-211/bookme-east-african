@@ -159,22 +159,21 @@ class _BoardingCode extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Center(
-          child: Semantics(
-            label: 'Boarding QR code for booking $reference',
-            image: true,
-            child: QrImageView(
-              data: ticket.qrPayload,
-              size: 158,
-              padding: EdgeInsets.zero,
-              backgroundColor: Colors.white,
-              eyeStyle: const QrEyeStyle(
-                eyeShape: QrEyeShape.square,
-                color: Colors.black,
-              ),
-              dataModuleStyle: const QrDataModuleStyle(
-                dataModuleShape: QrDataModuleShape.square,
-                color: Colors.black,
-              ),
+          child: QrImageView(
+            data: ticket.qrPayload,
+            size: 158,
+            padding: EdgeInsets.zero,
+            backgroundColor: Colors.white,
+            // Set here, not with a Semantics wrapper, or screen readers
+            // also hear QrImageView's default "qr code" label.
+            semanticsLabel: 'Boarding QR code for booking $reference',
+            eyeStyle: const QrEyeStyle(
+              eyeShape: QrEyeShape.square,
+              color: Colors.black,
+            ),
+            dataModuleStyle: const QrDataModuleStyle(
+              dataModuleShape: QrDataModuleShape.square,
+              color: Colors.black,
             ),
           ),
         ),
