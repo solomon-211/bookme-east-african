@@ -3,6 +3,18 @@ import 'package:equatable/equatable.dart';
 import 'package:bookme_summative_project/features/booking/domain/entities/booking.dart';
 import 'package:bookme_summative_project/features/booking/domain/entities/trip_summary.dart';
 
+/// Operator-side status of a departure, stored as `status` on the trip.
+enum TripStatus {
+  scheduled,
+  delayed,
+  cancelled;
+
+  static TripStatus fromName(String? name) => TripStatus.values.firstWhere(
+    (s) => s.name == name,
+    orElse: () => TripStatus.scheduled,
+  );
+}
+
 /// A booking joined with the trip it is for.
 ///
 /// The `bookings/{bookingId}` document only stores `tripId`, so the data
@@ -10,10 +22,17 @@ import 'package:bookme_summative_project/features/booking/domain/entities/trip_s
 /// Tickets & Trips screen works with this type and never touches the two
 /// documents directly.
 class Ticket extends Equatable {
-  const Ticket({required this.booking, required this.trip});
+  const Ticket({
+    required this.booking,
+    required this.trip,
+    this.tripStatus = TripStatus.scheduled,
+  });
 
   final Booking booking;
   final TripSummary trip;
+
+  /// Whether the operator is running the departure on time.
+  final TripStatus tripStatus;
 
   String get id => booking.id;
 
@@ -43,5 +62,5 @@ class Ticket extends Equatable {
   String get qrPayload => 'BOOKME:${booking.reference}:${booking.id}';
 
   @override
-  List<Object?> get props => [booking, trip];
+  List<Object?> get props => [booking, trip, tripStatus];
 }

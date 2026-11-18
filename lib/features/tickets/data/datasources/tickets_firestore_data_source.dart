@@ -62,7 +62,11 @@ class TicketsFirestoreDataSource implements TicketsDataSource {
           final tickets = <Ticket>[
             for (final booking in bookings)
               if (trips[booking.tripId] case final trip?)
-                Ticket(booking: booking, trip: trip),
+                Ticket(
+                  booking: booking,
+                  trip: trip.summary,
+                  tripStatus: trip.status,
+                ),
           ];
           tickets.sort((a, b) => b.trip.departure.compareTo(a.trip.departure));
           return tickets;
@@ -78,14 +82,18 @@ class TicketsFirestoreDataSource implements TicketsDataSource {
         .asyncMap((snap) async {
           final booking = BookingModel.fromMap(snap.id, snap.data()!);
           final trip = await _fetchTrip(booking);
-          return Ticket(booking: booking, trip: trip);
+          return Ticket(
+            booking: booking,
+            trip: trip.summary,
+            tripStatus: trip.status,
+          );
         });
   }
 
-  Future<TripSummary> _fetchTrip(Booking booking) async {
+  Future<_TripDoc> _fetchTrip(Booking booking) async {
     final doc = await _trips.doc(booking.tripId).get();
     final data = doc.data();
-    final trip = data == null ? null : TripDocumentMapper.fromMap(doc.id, data);
+    final trip = data == null ? null : _readTrip(doc.id, data);
     if (trip == null) {
       throw const BookingFailure(
         'We couldn\'t load the trip for this ticket. Please try again.',
@@ -95,9 +103,9 @@ class TicketsFirestoreDataSource implements TicketsDataSource {
   }
 
   /// Loads every trip in [tripIds] in as few reads as possible.
-  Future<Map<String, TripSummary>> _fetchTrips(Iterable<String> tripIds) async {
+  Future<Map<String, _TripDoc>> _fetchTrips(Iterable<String> tripIds) async {
     final ids = tripIds.toSet().toList();
-    final result = <String, TripSummary>{};
+    final result = <String, _TripDoc>{};
 
     for (var start = 0; start < ids.length; start += _whereInLimit) {
       final end = (start + _whereInLimit).clamp(0, ids.length);
@@ -105,10 +113,22 @@ class TicketsFirestoreDataSource implements TicketsDataSource {
           .where(FieldPath.documentId, whereIn: ids.sublist(start, end))
           .get();
       for (final doc in snapshot.docs) {
-        final trip = TripDocumentMapper.fromMap(doc.id, doc.data());
+        final trip = _readTrip(doc.id, doc.data());
         if (trip != null) result[doc.id] = trip;
       }
     }
     return result;
   }
+
+  _TripDoc? _readTrip(String id, Map<String, dynamic> data) {
+    final summary = TripDocumentMapper.fromMap(id, data);
+    if (summary == null) return null;
+    return (
+      summary: summary,
+      status: TripStatus.fromName(data['status'] as String?),
+    );
+  }
 }
+
+/// A trip document read from Firestore: the summary plus its live status.
+typedef _TripDoc = ({TripSummary summary, TripStatus status});

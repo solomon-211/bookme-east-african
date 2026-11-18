@@ -14,6 +14,7 @@ class TicketCacheModel {
     final booking = ticket.booking;
     final trip = ticket.trip;
     return {
+      'tripStatus': ticket.tripStatus.name,
       'booking': {
         'id': booking.id,
         'userId': booking.userId,
@@ -54,6 +55,7 @@ class TicketCacheModel {
     final passenger = b['passenger'];
 
     return Ticket(
+      tripStatus: TripStatus.fromName(json['tripStatus'] as String?),
       booking: Booking(
         id: b['id'] as String,
         userId: b['userId'] as String,
