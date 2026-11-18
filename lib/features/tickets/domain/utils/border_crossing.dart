@@ -61,3 +61,43 @@ List<BorderCheck> borderChecklist(Ticket ticket) {
     ),
   ];
 }
+
+/// One document the traveller ticks off on Ready for Journey.
+class TravelDocumentCheck {
+  const TravelDocumentCheck({
+    required this.id,
+    required this.title,
+    required this.detail,
+  });
+
+  /// Stable key used to remember the tick on the phone.
+  final String id;
+  final String title;
+  final String detail;
+}
+
+/// The documents to check before crossing into [country]. The traveller
+/// ticks these themselves; the app gives guidance, not entry rules.
+List<TravelDocumentCheck> travelDocumentChecklist(String country) => [
+  const TravelDocumentCheck(
+    id: 'passport',
+    title: 'Passport / EAC ID',
+    detail:
+        'Check the document accepted for your nationality and carry the '
+        'original.',
+  ),
+  const TravelDocumentCheck(
+    id: 'yellow_fever',
+    title: 'Yellow Fever Card',
+    detail:
+        'Check whether a valid vaccination certificate is required for your '
+        'entry.',
+  ),
+  TravelDocumentCheck(
+    id: 'visa',
+    title: 'Visa requirements',
+    detail:
+        'Check $country\'s current entry rules and any visa or permit you '
+        'need.',
+  ),
+];
