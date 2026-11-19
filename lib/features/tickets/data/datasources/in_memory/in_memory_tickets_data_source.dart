@@ -2,8 +2,10 @@ import 'dart:async';
 
 import 'package:bookme_summative_project/features/booking/domain/booking_failure.dart';
 import 'package:bookme_summative_project/features/booking/domain/entities/booking.dart';
+import 'package:bookme_summative_project/features/booking/domain/entities/trip_summary.dart';
 import 'package:bookme_summative_project/features/tickets/data/datasources/tickets_data_source.dart';
 import 'package:bookme_summative_project/features/tickets/domain/entities/ticket.dart';
+import 'package:bookme_summative_project/features/tickets/domain/utils/date_change.dart';
 import 'package:bookme_summative_project/features/tickets/domain/utils/refund_policy.dart';
 
 /// Same behaviour as the Firestore tickets data source, without a server.
@@ -15,11 +17,22 @@ class InMemoryTicketsDataSource implements TicketsDataSource {
   InMemoryTicketsDataSource({
     this.userId = 'demo-user',
     Iterable<Ticket> initial = const [],
-  }) {
+    Iterable<TripSummary> trips = const [],
+    Map<String, List<String>> freeSeats = const {},
+  }) : _trips = List.of(trips) {
     for (final ticket in initial) {
       _tickets[ticket.id] = ticket;
     }
+    freeSeats.forEach((tripId, seats) => _freeSeats[tripId] = List.of(seats));
   }
+
+  final List<TripSummary> _trips;
+
+  /// Free seat numbers by trip id, taken in order by [changeTrip].
+  final Map<String, List<String>> _freeSeats = {};
+
+  /// Every move made by [changeTrip], oldest first.
+  final List<DateChangeQuote> changes = [];
 
   /// Plays the role of the Firebase Auth uid.
   final String userId;
@@ -66,6 +79,54 @@ class InMemoryTicketsDataSource implements TicketsDataSource {
 
   @override
   Future<void> deleteBooking(String bookingId) async => remove(bookingId);
+
+  @override
+  Future<List<TripSummary>> findTrips(TripSummary trip) async => _trips
+      .where(
+        (t) =>
+            t.fromStation == trip.fromStation && t.toStation == trip.toStation,
+      )
+      .toList();
+
+  @override
+  Future<Ticket> changeTrip(Ticket ticket, DateChangeQuote quote) async {
+    final current = _tickets[ticket.id];
+    if (current == null ||
+        !current.isPaid ||
+        current.booking.tripId != ticket.booking.tripId) {
+      throw const BookingFailure(
+        'This booking was already cancelled or changed.',
+      );
+    }
+    final seats = _freeSeats[quote.newTrip.tripId] ?? [];
+    if (seats.isEmpty) {
+      throw const BookingFailure(
+        'This departure is fully booked. Please pick another one.',
+      );
+    }
+    final old = current.booking;
+    final changed = Ticket(
+      booking: Booking(
+        id: old.id,
+        userId: old.userId,
+        reference: old.reference,
+        tripId: quote.newTrip.tripId,
+        seatNumber: seats.removeAt(0),
+        status: old.status,
+        holdExpiresAt: old.holdExpiresAt,
+        totalAmount: quote.newTotal,
+        currency: old.currency,
+        createdAt: old.createdAt,
+        passenger: old.passenger,
+        paymentId: old.paymentId,
+      ),
+      trip: quote.newTrip,
+    );
+    freedSeats.add('${old.tripId}/${old.seatNumber}');
+    changes.add(quote);
+    put(changed);
+    return changed;
+  }
 
   @override
   Stream<List<Ticket>> watchMyTickets() => _watch(_myTickets);

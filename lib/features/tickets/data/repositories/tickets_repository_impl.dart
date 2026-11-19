@@ -1,10 +1,13 @@
+import 'package:bookme_summative_project/core/utils/formatters.dart';
 import 'package:bookme_summative_project/features/booking/data/datasources/firebase_error_mapper.dart';
 import 'package:bookme_summative_project/features/booking/domain/booking_failure.dart';
 import 'package:bookme_summative_project/features/booking/domain/entities/booking.dart';
+import 'package:bookme_summative_project/features/booking/domain/entities/trip_summary.dart';
 import 'package:bookme_summative_project/features/tickets/data/datasources/ticket_cache_data_source.dart';
 import 'package:bookme_summative_project/features/tickets/data/datasources/tickets_data_source.dart';
 import 'package:bookme_summative_project/features/tickets/domain/entities/ticket.dart';
 import 'package:bookme_summative_project/features/tickets/domain/repositories/tickets_repository.dart';
+import 'package:bookme_summative_project/features/tickets/domain/utils/date_change.dart';
 import 'package:bookme_summative_project/features/tickets/domain/utils/refund_policy.dart';
 
 class TicketsRepositoryImpl implements TicketsRepository {
@@ -123,6 +126,54 @@ class TicketsRepositoryImpl implements TicketsRepository {
     } on Object {
       // The live list no longer has it, so the next sync drops it.
     }
+  }
+
+  @override
+  Future<List<TripSummary>> alternativeTrips(Ticket ticket) async {
+    final List<TripSummary> trips;
+    try {
+      trips = await _source.findTrips(ticket.trip);
+    } on Object catch (e) {
+      throw mapFirebaseError(
+        e,
+        fallback: 'We couldn\'t load other departures. Please try again.',
+      );
+    }
+    final now = _now();
+    return trips.where((trip) => canChangeTo(ticket, trip, now)).toList()
+      ..sort((a, b) => a.departure.compareTo(b.departure));
+  }
+
+  @override
+  Future<Ticket> changeTrip(Ticket ticket, TripSummary newTrip) async {
+    final quote = dateChangeQuote(ticket, newTrip, _now());
+    if (quote == null) {
+      throw const BookingFailure(
+        'This booking can\'t be moved to that departure.',
+      );
+    }
+    if (quote.needsTopUp) {
+      throw BookingFailure(
+        'This departure costs '
+        '${Formatters.money(quote.difference, newTrip.currency)} more, and paying a difference in the app isn\'t available yet. '
+        'Pick a departure at the same price or cheaper.',
+      );
+    }
+    final Ticket changed;
+    try {
+      changed = await _source.changeTrip(ticket, quote);
+    } on Object catch (e) {
+      throw mapFirebaseError(
+        e,
+        fallback: 'We couldn\'t change your booking. Please try again.',
+      );
+    }
+    try {
+      await saveForOffline(changed);
+    } on Object {
+      // The live update replaces the cache on the next sync.
+    }
+    return changed;
   }
 
   /// A full disk must never stop the live list from showing, so cache

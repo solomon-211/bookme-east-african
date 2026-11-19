@@ -1,4 +1,6 @@
+import 'package:bookme_summative_project/features/booking/domain/entities/trip_summary.dart';
 import 'package:bookme_summative_project/features/tickets/domain/entities/ticket.dart';
+import 'package:bookme_summative_project/features/tickets/domain/utils/date_change.dart';
 import 'package:bookme_summative_project/features/tickets/domain/utils/refund_policy.dart';
 
 /// The signed-in traveller's tickets. Implemented in the data layer with
@@ -39,4 +41,15 @@ abstract class TicketsRepository {
   /// Throws a `BookingFailure` for an upcoming trip, which has to be
   /// cancelled first so the seat and the refund are handled.
   Future<void> removeFromHistory(Ticket ticket);
+
+  /// Departures [ticket] can move to (see [canChangeTo]), soonest first.
+  Future<List<TripSummary>> alternativeTrips(Ticket ticket);
+
+  /// Moves [ticket] to [newTrip] on a new seat and returns the updated
+  /// ticket. A cheaper trip records the difference as a refund.
+  ///
+  /// Throws a `BookingFailure` when the move is not allowed, when the new
+  /// trip costs more (paying a difference is not available yet), or when
+  /// the new trip has no free seat.
+  Future<Ticket> changeTrip(Ticket ticket, TripSummary newTrip);
 }

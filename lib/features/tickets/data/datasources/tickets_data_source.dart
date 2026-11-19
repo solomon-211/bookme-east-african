@@ -1,4 +1,6 @@
+import 'package:bookme_summative_project/features/booking/domain/entities/trip_summary.dart';
 import 'package:bookme_summative_project/features/tickets/domain/entities/ticket.dart';
+import 'package:bookme_summative_project/features/tickets/domain/utils/date_change.dart';
 import 'package:bookme_summative_project/features/tickets/domain/utils/refund_policy.dart';
 
 /// Storage for the traveller's tickets.
@@ -15,4 +17,13 @@ abstract interface class TicketsDataSource {
 
   /// Deletes the booking document for good.
   Future<void> deleteBooking(String bookingId);
+
+  /// Every trip between the same two stations as [trip], whether it has
+  /// left or not.
+  Future<List<TripSummary>> findTrips(TripSummary trip);
+
+  /// Moves the paid booking onto [DateChangeQuote.newTrip]: takes a free
+  /// seat there, frees the old seat and records the change, all at once.
+  /// Returns the updated ticket.
+  Future<Ticket> changeTrip(Ticket ticket, DateChangeQuote quote);
 }

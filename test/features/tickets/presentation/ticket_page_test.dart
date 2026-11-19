@@ -7,11 +7,13 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:bookme_summative_project/features/booking/domain/entities/booking.dart';
+import 'package:bookme_summative_project/features/booking/domain/entities/trip_summary.dart';
 import 'package:bookme_summative_project/features/tickets/data/datasources/ticket_cache_data_source.dart';
 import 'package:bookme_summative_project/features/tickets/data/datasources/tickets_data_source.dart';
 import 'package:bookme_summative_project/features/tickets/data/repositories/tickets_repository_impl.dart';
 import 'package:bookme_summative_project/features/tickets/domain/entities/ticket.dart';
 import 'package:bookme_summative_project/features/tickets/domain/repositories/tickets_repository.dart';
+import 'package:bookme_summative_project/features/tickets/domain/utils/date_change.dart';
 import 'package:bookme_summative_project/features/tickets/domain/utils/refund_policy.dart';
 import 'package:bookme_summative_project/features/tickets/presentation/pages/ticket_page.dart';
 
@@ -32,6 +34,13 @@ class _ManualSource implements TicketsDataSource {
 
   @override
   Future<void> deleteBooking(String bookingId) async {}
+
+  @override
+  Future<List<TripSummary>> findTrips(TripSummary trip) async => const [];
+
+  @override
+  Future<Ticket> changeTrip(Ticket ticket, DateChangeQuote quote) =>
+      throw UnimplementedError();
 }
 
 void main() {
