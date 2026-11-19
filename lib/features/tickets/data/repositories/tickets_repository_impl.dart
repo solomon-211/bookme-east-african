@@ -100,6 +100,31 @@ class TicketsRepositoryImpl implements TicketsRepository {
     return refund;
   }
 
+  @override
+  Future<void> removeFromHistory(Ticket ticket) async {
+    if (!ticket.isPast(_now())) {
+      throw const BookingFailure(
+        'Upcoming trips can\'t be removed. Cancel the booking first.',
+      );
+    }
+    try {
+      await _source.deleteBooking(ticket.id);
+    } on Object catch (e) {
+      throw mapFirebaseError(
+        e,
+        fallback: 'We couldn\'t remove this trip. Please try again.',
+      );
+    }
+    final uid = _currentUserId();
+    if (uid == null) return;
+    try {
+      final rest = _cache.load(uid).where((t) => t.id != ticket.id).toList();
+      await _cache.save(uid, rest);
+    } on Object {
+      // The live list no longer has it, so the next sync drops it.
+    }
+  }
+
   /// A full disk must never stop the live list from showing, so cache
   /// failures are ignored; the previous cache simply stays in place.
   Future<void> _saveToCache(List<Ticket> tickets) async {

@@ -32,4 +32,11 @@ abstract class TicketsRepository {
     Ticket ticket, {
     Duration delay = Duration.zero,
   });
+
+  /// Deletes a cancelled or finished trip from the account and this phone
+  /// ("Remove from history").
+  ///
+  /// Throws a `BookingFailure` for an upcoming trip, which has to be
+  /// cancelled first so the seat and the refund are handled.
+  Future<void> removeFromHistory(Ticket ticket);
 }

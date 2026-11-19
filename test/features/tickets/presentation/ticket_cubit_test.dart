@@ -24,6 +24,9 @@ class _ManualSource implements TicketsDataSource {
 
   @override
   Future<void> cancelBooking(Ticket ticket, RefundQuote refund) async {}
+
+  @override
+  Future<void> deleteBooking(String bookingId) async {}
 }
 
 void main() {

@@ -133,6 +133,10 @@ class TicketsFirestoreDataSource implements TicketsDataSource {
     });
   }
 
+  @override
+  Future<void> deleteBooking(String bookingId) =>
+      _bookings.doc(bookingId).delete();
+
   Future<_TripDoc> _fetchTrip(Booking booking) async {
     final doc = await _trips.doc(booking.tripId).get();
     final data = doc.data();

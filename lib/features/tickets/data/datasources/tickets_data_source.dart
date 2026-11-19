@@ -12,4 +12,7 @@ abstract interface class TicketsDataSource {
   /// Marks the paid booking cancelled, records [refund] on it and frees the
   /// seat, all at once. Fails if the booking is no longer paid.
   Future<void> cancelBooking(Ticket ticket, RefundQuote refund);
+
+  /// Deletes the booking document for good.
+  Future<void> deleteBooking(String bookingId);
 }

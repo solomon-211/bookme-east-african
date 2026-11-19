@@ -65,6 +65,9 @@ class InMemoryTicketsDataSource implements TicketsDataSource {
   }
 
   @override
+  Future<void> deleteBooking(String bookingId) async => remove(bookingId);
+
+  @override
   Stream<List<Ticket>> watchMyTickets() => _watch(_myTickets);
 
   @override
