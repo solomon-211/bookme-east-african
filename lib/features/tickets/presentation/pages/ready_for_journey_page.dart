@@ -10,6 +10,7 @@ import 'package:bookme_summative_project/features/tickets/domain/repositories/jo
 import 'package:bookme_summative_project/features/tickets/domain/repositories/tickets_repository.dart';
 import 'package:bookme_summative_project/features/tickets/domain/utils/border_crossing.dart';
 import 'package:bookme_summative_project/features/tickets/presentation/cubits/ready_for_journey_cubit.dart';
+import 'package:bookme_summative_project/features/tickets/presentation/widgets/page_header.dart';
 import 'package:bookme_summative_project/features/tickets/presentation/widgets/trip_route_row.dart';
 import 'package:bookme_summative_project/features/tickets/presentation/widgets/upcoming_trip_card.dart';
 
@@ -81,7 +82,8 @@ class ReadyForJourneyView extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                _Header(
+                PageHeader(
+                  title: 'Ready for your journey?',
                   subtitle: passenger == null
                       ? ticket.booking.reference
                       : '${ticket.booking.reference} · $passenger',
@@ -123,67 +125,6 @@ class ReadyForJourneyView extends StatelessWidget {
               : null,
         );
       },
-    );
-  }
-}
-
-class _Header extends StatelessWidget {
-  const _Header({required this.subtitle});
-
-  final String subtitle;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 12, 20, 12),
-      child: Row(
-        children: [
-          Material(
-            color: AppColors.card,
-            shape: const CircleBorder(
-              side: BorderSide(color: AppColors.border),
-            ),
-            child: IconButton(
-              tooltip: 'Back',
-              onPressed: () => Navigator.of(context).maybePop(),
-              icon: const Icon(Icons.arrow_back, size: 20),
-              color: AppColors.ink,
-              // 36 like the design. The header row around it is tall
-              // enough that nothing else sits within reach of the thumb.
-              constraints: const BoxConstraints.tightFor(width: 36, height: 36),
-              padding: EdgeInsets.zero,
-            ),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Ready for your journey?',
-                  style: TextStyle(
-                    fontSize: 18,
-                    height: 1.4,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.ink,
-                  ),
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  subtitle,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    fontSize: 11,
-                    height: 1.4,
-                    color: AppColors.muted,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
     );
   }
 }

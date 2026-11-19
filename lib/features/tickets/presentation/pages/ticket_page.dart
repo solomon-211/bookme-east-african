@@ -11,6 +11,7 @@ import 'package:bookme_summative_project/features/tickets/domain/repositories/ti
 import 'package:bookme_summative_project/features/tickets/domain/utils/border_crossing.dart';
 import 'package:bookme_summative_project/features/tickets/presentation/cubits/ticket_cubit.dart';
 import 'package:bookme_summative_project/features/tickets/presentation/widgets/digital_ticket_card.dart';
+import 'package:bookme_summative_project/features/tickets/presentation/widgets/menu_tile.dart';
 
 /// Dark card behind the escrow message, one step lighter than the page.
 const Color _raisedDark = Color(0xFF1A241E);
@@ -20,6 +21,7 @@ class TicketActions {
   const TicketActions({
     required this.onOpenChecklist,
     required this.onOpenEscrowInfo,
+    this.onManage,
   });
 
   /// "View Cross-Border Checklist" (Ready for Journey).
@@ -27,6 +29,10 @@ class TicketActions {
 
   /// "View Escrow Info" (Where your money is).
   final void Function(BuildContext context, Ticket ticket) onOpenEscrowInfo;
+
+  /// "Manage booking": change, cancel or remove from history. The row is
+  /// hidden when this is left out.
+  final void Function(BuildContext context, Ticket ticket)? onManage;
 }
 
 /// The Digital Ticket ("Seat Booked") for one booking. Needs a
@@ -177,7 +183,7 @@ class _TicketBody extends StatelessWidget {
           const SizedBox(height: 16),
         ],
         if (crossesBorder) ...[
-          _LinkTile(
+          MenuTile(
             icon: Icons.checklist_rounded,
             title: 'View Cross-Border Checklist',
             subtitle: 'Prepare documents before travel',
@@ -185,7 +191,7 @@ class _TicketBody extends StatelessWidget {
           ),
           const SizedBox(height: 16),
         ],
-        _LinkTile(
+        MenuTile(
           icon: Icons.verified_user_outlined,
           title: 'View Escrow Info',
           subtitle: ticket.isCancelled
@@ -194,6 +200,17 @@ class _TicketBody extends StatelessWidget {
           onTap: () => actions.onOpenEscrowInfo(context, ticket),
         ),
         const SizedBox(height: 16),
+        if (actions.onManage case final manage?) ...[
+          MenuTile(
+            icon: Icons.tune_rounded,
+            title: 'Manage booking',
+            subtitle: ticket.isPaid
+                ? 'Change date, cancel or remove from history'
+                : 'Remove from history',
+            onTap: () => manage(context, ticket),
+          ),
+          const SizedBox(height: 16),
+        ],
         const Text(
           'Ticket stored on this phone · No internet needed to show QR',
           textAlign: TextAlign.center,
@@ -282,78 +299,6 @@ class _EscrowCard extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _LinkTile extends StatelessWidget {
-  const _LinkTile({
-    required this.icon,
-    required this.title,
-    required this.subtitle,
-    required this.onTap,
-  });
-
-  final IconData icon;
-  final String title;
-  final String subtitle;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: AppColors.card,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-        side: const BorderSide(color: AppColors.border),
-      ),
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.all(14),
-          child: Row(
-            children: [
-              Container(
-                width: 36,
-                height: 36,
-                decoration: BoxDecoration(
-                  color: const Color(0xFFEBEFEE),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Icon(icon, size: 18, color: AppColors.ink),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      style: const TextStyle(
-                        fontSize: 13,
-                        height: 1.4,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.ink,
-                      ),
-                    ),
-                    const SizedBox(height: 3),
-                    Text(
-                      subtitle,
-                      style: const TextStyle(
-                        fontSize: 11,
-                        height: 1.4,
-                        color: AppColors.muted,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const Icon(Icons.chevron_right, size: 16, color: AppColors.muted),
-            ],
-          ),
-        ),
       ),
     );
   }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:bookme_summative_project/core/theme/app_colors.dart';
 import 'package:bookme_summative_project/features/booking/domain/entities/booking.dart';
 import 'package:bookme_summative_project/features/tickets/domain/entities/ticket.dart';
+import 'package:bookme_summative_project/features/tickets/presentation/pages/manage_booking_page.dart';
 import 'package:bookme_summative_project/features/tickets/presentation/pages/my_trips_page.dart';
 import 'package:bookme_summative_project/features/tickets/presentation/pages/offline_ticket_page.dart';
 import 'package:bookme_summative_project/features/tickets/presentation/pages/ready_for_journey_page.dart';
@@ -70,15 +71,28 @@ class TicketsNavigation {
     );
   }
 
-  /// Manage Booking is built on Day 3; until then this explains it.
   void openManage(BuildContext context, Ticket ticket) {
     _push(
       context,
+      ManageBookingPage(
+        ticket: ticket,
+        clock: clock,
+        actions: ManageBookingActions(
+          onChangeDate: _changeDate,
+          onOpenEscrowInfo: _escrowInfo,
+        ),
+      ),
+    );
+  }
+
+  /// The departure picker is the next screen to be built; until then this
+  /// explains it.
+  void _changeDate(BuildContext context, Ticket ticket) {
+    _push(
+      context,
       const _NotReadyPage(
-        title: 'Manage Booking',
-        message:
-            'Changing the date or cancelling this booking will be available '
-            'here soon.',
+        title: 'Change date / time',
+        message: 'Picking another departure will be available here soon.',
       ),
     );
   }
@@ -88,6 +102,7 @@ class TicketsNavigation {
     actions: TicketActions(
       onOpenChecklist: openReadyForJourney,
       onOpenEscrowInfo: _escrowInfo,
+      onManage: openManage,
     ),
   );
 
