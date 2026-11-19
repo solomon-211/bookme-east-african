@@ -51,7 +51,10 @@ void main() {
                       ticket: testTicket(),
                       clock: () => now,
                       actions: ManageBookingActions(
-                        onChangeDate: (_, t) => changeDateOpened.add(t),
+                        onChangeDate: (_, t) async {
+                          changeDateOpened.add(t);
+                          return null;
+                        },
                         onOpenEscrowInfo: (_, _) {},
                       ),
                     ),

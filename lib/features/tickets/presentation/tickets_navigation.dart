@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:bookme_summative_project/core/theme/app_colors.dart';
 import 'package:bookme_summative_project/features/booking/domain/entities/booking.dart';
 import 'package:bookme_summative_project/features/tickets/domain/entities/ticket.dart';
+import 'package:bookme_summative_project/features/tickets/presentation/pages/change_date_page.dart';
 import 'package:bookme_summative_project/features/tickets/presentation/pages/manage_booking_page.dart';
 import 'package:bookme_summative_project/features/tickets/presentation/pages/my_trips_page.dart';
 import 'package:bookme_summative_project/features/tickets/presentation/pages/offline_ticket_page.dart';
@@ -85,17 +85,12 @@ class TicketsNavigation {
     );
   }
 
-  /// The departure picker is the next screen to be built; until then this
-  /// explains it.
-  void _changeDate(BuildContext context, Ticket ticket) {
-    _push(
-      context,
-      const _NotReadyPage(
-        title: 'Change date / time',
-        message: 'Picking another departure will be available here soon.',
-      ),
-    );
-  }
+  Future<Ticket?> _changeDate(BuildContext context, Ticket ticket) =>
+      Navigator.of(context).push<Ticket>(
+        MaterialPageRoute(
+          builder: (_) => ChangeDatePage(ticket: ticket, clock: clock),
+        ),
+      );
 
   Widget _ticketPage(String bookingId) => TicketPage(
     bookingId: bookingId,
@@ -129,36 +124,5 @@ class TicketsNavigation {
 
   static void _push(BuildContext context, Widget page) {
     Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => page));
-  }
-}
-
-class _NotReadyPage extends StatelessWidget {
-  const _NotReadyPage({required this.title, required this.message});
-
-  final String title;
-  final String message;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.surface,
-      appBar: AppBar(
-        title: Text(title),
-        backgroundColor: AppColors.surface,
-        foregroundColor: AppColors.ink,
-        elevation: 0,
-        scrolledUnderElevation: 0,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Center(
-          child: Text(
-            message,
-            textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 14, color: AppColors.muted),
-          ),
-        ),
-      ),
-    );
   }
 }

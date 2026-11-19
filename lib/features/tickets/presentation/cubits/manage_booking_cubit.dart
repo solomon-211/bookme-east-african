@@ -87,6 +87,15 @@ class ManageBookingCubit extends Cubit<ManageBookingState> {
     }
   }
 
+  /// The booking was moved to another departure; the refund for
+  /// cancelling is worked out again for the new trip.
+  void ticketChanged(Ticket ticket) {
+    if (isClosed) return;
+    emit(
+      ManageBookingState(ticket: ticket, quote: refundQuote(ticket, _now())),
+    );
+  }
+
   Future<void> remove() async {
     if (state.isWorking || !canRemove) return;
     emit(_copy(status: ManageBookingStatus.working));

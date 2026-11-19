@@ -2,7 +2,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:bookme_summative_project/features/booking/domain/booking_failure.dart';
-import 'package:bookme_summative_project/features/booking/domain/entities/trip_summary.dart';
 import 'package:bookme_summative_project/features/tickets/data/datasources/in_memory/in_memory_tickets_data_source.dart';
 import 'package:bookme_summative_project/features/tickets/data/datasources/ticket_cache_data_source.dart';
 import 'package:bookme_summative_project/features/tickets/data/repositories/tickets_repository_impl.dart';
@@ -10,27 +9,6 @@ import 'package:bookme_summative_project/features/tickets/domain/utils/date_chan
 
 import '../../../helpers/test_ticket.dart';
 import '../../../helpers/test_trip.dart';
-
-/// [testTrip] (18,500 RWF in total) on another day and at another price.
-TripSummary otherDeparture(
-  String id, {
-  required DateTime departure,
-  int baseFare = 18000,
-  String toStation = 'Namirembe',
-  String toCode = 'KLA',
-}) => TripSummary(
-  tripId: id,
-  operatorName: testTrip.operatorName,
-  fromCode: testTrip.fromCode,
-  fromStation: testTrip.fromStation,
-  toCode: toCode,
-  toStation: toStation,
-  departure: departure,
-  arrival: departure.add(const Duration(hours: 9, minutes: 30)),
-  durationLabel: testTrip.durationLabel,
-  baseFare: baseFare,
-  serviceFee: testTrip.serviceFee,
-);
 
 void main() {
   // Two days before testTicket's 4 Dec 2026 21:00 departure.

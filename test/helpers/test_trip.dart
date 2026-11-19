@@ -13,3 +13,24 @@ final TripSummary testTrip = TripSummary(
   baseFare: 18000,
   serviceFee: 500,
 );
+
+/// [testTrip] (18,500 RWF in total) on another day and at another price.
+TripSummary otherDeparture(
+  String id, {
+  required DateTime departure,
+  int baseFare = 18000,
+  String toStation = 'Namirembe',
+  String toCode = 'KLA',
+}) => TripSummary(
+  tripId: id,
+  operatorName: testTrip.operatorName,
+  fromCode: testTrip.fromCode,
+  fromStation: testTrip.fromStation,
+  toCode: toCode,
+  toStation: toStation,
+  departure: departure,
+  arrival: departure.add(const Duration(hours: 9, minutes: 30)),
+  durationLabel: testTrip.durationLabel,
+  baseFare: baseFare,
+  serviceFee: testTrip.serviceFee,
+);

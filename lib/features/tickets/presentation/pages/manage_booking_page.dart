@@ -19,8 +19,10 @@ class ManageBookingActions {
     required this.onOpenEscrowInfo,
   });
 
-  /// "Change date / time".
-  final void Function(BuildContext context, Ticket ticket) onChangeDate;
+  /// "Change date / time". Completes with the moved booking, or `null` if
+  /// the traveller went back without changing it.
+  final Future<Ticket?> Function(BuildContext context, Ticket ticket)
+  onChangeDate;
 
   /// "Where your money is".
   final void Function(BuildContext context, Ticket ticket) onOpenEscrowInfo;
@@ -115,7 +117,7 @@ class ManageBookingView extends StatelessWidget {
                           subtitle:
                               'See available departures and any fare '
                               'difference before confirming.',
-                          onTap: () => actions.onChangeDate(context, ticket),
+                          onTap: () => _changeDate(context, ticket),
                         ),
                       ],
                       if (state.quote case final quote?) ...[
@@ -171,6 +173,12 @@ class ManageBookingView extends StatelessWidget {
         );
       },
     );
+  }
+
+  Future<void> _changeDate(BuildContext context, Ticket ticket) async {
+    final cubit = context.read<ManageBookingCubit>();
+    final changed = await actions.onChangeDate(context, ticket);
+    if (changed != null) cubit.ticketChanged(changed);
   }
 
   Future<void> _confirmCancel(
