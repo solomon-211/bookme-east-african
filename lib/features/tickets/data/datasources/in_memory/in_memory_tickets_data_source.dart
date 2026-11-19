@@ -1,7 +1,10 @@
 import 'dart:async';
 
+import 'package:bookme_summative_project/features/booking/domain/booking_failure.dart';
+import 'package:bookme_summative_project/features/booking/domain/entities/booking.dart';
 import 'package:bookme_summative_project/features/tickets/data/datasources/tickets_data_source.dart';
 import 'package:bookme_summative_project/features/tickets/domain/entities/ticket.dart';
+import 'package:bookme_summative_project/features/tickets/domain/utils/refund_policy.dart';
 
 /// Same behaviour as the Firestore tickets data source, without a server.
 ///
@@ -22,6 +25,12 @@ class InMemoryTicketsDataSource implements TicketsDataSource {
   final String userId;
 
   final Map<String, Ticket> _tickets = {};
+
+  /// Refunds recorded by [cancelBooking], by booking id.
+  final Map<String, RefundQuote> refunds = {};
+
+  /// Seats freed by [cancelBooking], as `tripId/seatNumber`.
+  final Set<String> freedSeats = {};
   final StreamController<void> _changes = StreamController<void>.broadcast();
 
   /// Adds or replaces a ticket, like writing the booking document.
@@ -34,6 +43,25 @@ class InMemoryTicketsDataSource implements TicketsDataSource {
   void remove(String bookingId) {
     _tickets.remove(bookingId);
     _changes.add(null);
+  }
+
+  @override
+  Future<void> cancelBooking(Ticket ticket, RefundQuote refund) async {
+    final current = _tickets[ticket.id];
+    if (current == null || !current.isPaid) {
+      throw const BookingFailure(
+        'This booking was already cancelled or changed.',
+      );
+    }
+    refunds[ticket.id] = refund;
+    freedSeats.add('${current.booking.tripId}/${current.booking.seatNumber}');
+    put(
+      Ticket(
+        booking: current.booking.copyWith(status: BookingStatus.cancelled),
+        trip: current.trip,
+        tripStatus: current.tripStatus,
+      ),
+    );
   }
 
   @override

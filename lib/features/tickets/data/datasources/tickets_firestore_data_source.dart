@@ -7,14 +7,17 @@ import 'package:bookme_summative_project/features/booking/domain/entities/trip_s
 import 'package:bookme_summative_project/features/tickets/data/datasources/tickets_data_source.dart';
 import 'package:bookme_summative_project/features/tickets/data/models/trip_document_mapper.dart';
 import 'package:bookme_summative_project/features/tickets/domain/entities/ticket.dart';
+import 'package:bookme_summative_project/features/tickets/domain/utils/refund_policy.dart';
 
 /// Reads the traveller's bookings from Firestore and joins each one with
 /// its trip.
 ///
 /// Collections read:
 /// * `bookings/{bookingId}`, filtered to the signed-in user (owned by
-///   Booking & Payment; this feature only reads and, later, updates it).
+///   Booking & Payment; this feature reads it and cancels it).
 /// * `trips/{tripId}`, owned by Search.
+/// * `trips/{tripId}/seats/{seatNumber}`, freed when a booking is
+///   cancelled.
 ///
 /// The bookings query uses only equality / `in` filters, so Firestore can
 /// answer it without a composite index. Sorting by departure happens here,
@@ -88,6 +91,46 @@ class TicketsFirestoreDataSource implements TicketsDataSource {
             tripStatus: trip.status,
           );
         });
+  }
+
+  /// Runs as one transaction, so the booking is never cancelled without
+  /// its seat being freed (or the other way round). The seat is only freed
+  /// if it still belongs to this booking.
+  @override
+  Future<void> cancelBooking(Ticket ticket, RefundQuote refund) {
+    final booking = ticket.booking;
+    final bookingRef = _bookings.doc(booking.id);
+    final seatRef = _trips
+        .doc(booking.tripId)
+        .collection('seats')
+        .doc(booking.seatNumber);
+
+    return _db.runTransaction((tx) async {
+      final bookingSnap = await tx.get(bookingRef);
+      final seatSnap = await tx.get(seatRef);
+
+      if (bookingSnap.data()?['status'] != BookingStatus.paid.name) {
+        throw const BookingFailure(
+          'This booking was already cancelled or changed.',
+        );
+      }
+
+      if (seatSnap.data()?['bookingId'] == booking.id) {
+        tx.update(seatRef, {
+          'status': 'available',
+          'heldBy': null,
+          'holdExpiresAt': null,
+          'bookingId': null,
+        });
+      }
+      tx.update(bookingRef, {
+        'status': BookingStatus.cancelled.name,
+        'cancelledAt': FieldValue.serverTimestamp(),
+        'refundAmount': refund.refund,
+        'refundReason': refund.reason.name,
+        'updatedAt': FieldValue.serverTimestamp(),
+      });
+    });
   }
 
   Future<_TripDoc> _fetchTrip(Booking booking) async {

@@ -7,6 +7,7 @@ import 'package:bookme_summative_project/features/tickets/data/datasources/ticke
 import 'package:bookme_summative_project/features/tickets/data/datasources/tickets_data_source.dart';
 import 'package:bookme_summative_project/features/tickets/data/repositories/tickets_repository_impl.dart';
 import 'package:bookme_summative_project/features/tickets/domain/entities/ticket.dart';
+import 'package:bookme_summative_project/features/tickets/domain/utils/refund_policy.dart';
 import 'package:bookme_summative_project/features/tickets/presentation/cubits/ticket_cubit.dart';
 
 import '../../../helpers/test_ticket.dart';
@@ -20,6 +21,9 @@ class _ManualSource implements TicketsDataSource {
 
   @override
   Stream<List<Ticket>> watchMyTickets() => const Stream.empty();
+
+  @override
+  Future<void> cancelBooking(Ticket ticket, RefundQuote refund) async {}
 }
 
 void main() {
