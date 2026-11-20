@@ -3,9 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import 'core/router/app_router.dart';
-import 'core/theme/app_theme.dart';
+import 'core/theme/bookme_themes.dart';
 import 'features/auth/bloc/auth_bloc.dart';
 import 'features/auth/data/auth_repository.dart';
+import 'features/settings/presentation/settings_cubit.dart';
+import 'features/settings/presentation/settings_state.dart';
 
 final GlobalKey<ScaffoldMessengerState> messengerKey =
     GlobalKey<ScaffoldMessengerState>();
@@ -59,12 +61,17 @@ class _BookMeAppState extends State<BookMeApp> {
                 behavior: SnackBarBehavior.floating,
               ));
           },
-          child: MaterialApp.router(
-            title: 'BookMe East Africa',
-            debugShowCheckedModeBanner: false,
-            theme: AppTheme.light,
-            scaffoldMessengerKey: messengerKey,
-            routerConfig: _router,
+          child: BlocBuilder<SettingsCubit, SettingsState>(
+            buildWhen: (a, b) => a.themeMode != b.themeMode,
+            builder: (context, settings) => MaterialApp.router(
+              title: 'BookMe East Africa',
+              debugShowCheckedModeBanner: false,
+              theme: BookMeThemes.light,
+              darkTheme: BookMeThemes.dark,
+              themeMode: settings.themeMode,
+              scaffoldMessengerKey: messengerKey,
+              routerConfig: _router,
+            ),
           ),
         ),
       ),
