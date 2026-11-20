@@ -1,0 +1,97 @@
+--- a/firestore.rules
++++ b/firestore.rules
+@@ -124,7 +124,8 @@
+                       && onlyChanges(['status', 'heldBy', 'holdExpiresAt',
+                                       'bookingId'])
+                       && (takingFreeSeat() || releasingOwnHold()
+-                          || extendingOwnHold() || bookingOwnHold());
++                          || extendingOwnHold() || bookingOwnHold()
++                          || movingBookingHere());
+ 
+         function seatIsFree() {
+           return resource.data.status == 'available'
+@@ -152,6 +153,21 @@
+               && request.resource.data.status == 'booked';
+         }
+ 
++        // Change date (Tickets & Trips): a paid booking of this user takes
++        // a free seat on another departure, in the same transaction that
++        // moves the booking here.
++        function movingBookingHere() {
++          let path = /databases/$(database)/documents/bookings/$(request.resource.data.bookingId);
++          let booking = getAfter(path).data;
++          return resource.data.status == 'available'
++              && request.resource.data.status == 'booked'
++              && request.resource.data.heldBy == request.auth.uid
++              && booking.userId == request.auth.uid
++              && booking.status == 'paid'
++              && booking.tripId == tripId
++              && booking.seatNumber == seatNumber;
++        }
++
+         function extendingOwnHold() {
+           return resource.data.heldBy == request.auth.uid
+               && request.resource.data.status == 'held'
+@@ -179,16 +195,56 @@
+       allow update: if signedIn()
+                     && resource.data.userId == request.auth.uid
+                     && request.resource.data.userId == resource.data.userId
+-                    && request.resource.data.totalAmount
+-                         == resource.data.totalAmount
+-                    && request.resource.data.tripId == resource.data.tripId
+                     && request.resource.data.reference
+                          == resource.data.reference
+                     && request.resource.data.status
+-                         in ['held', 'paid', 'expired', 'cancelled'];
++                         in ['held', 'paid', 'expired', 'cancelled']
++                    && (keepsTripAndPrice() || changingDeparture())
++                    && validRefund();
+ 
+-      // Cancelling is a status change, so history is kept for refunds.
+-      allow delete: if false;
++      function keepsTripAndPrice() {
++        return request.resource.data.totalAmount == resource.data.totalAmount
++            && request.resource.data.tripId == resource.data.tripId;
++      }
++
++      // Change date (Tickets & Trips): a paid booking moves to another
++      // departure at the same price or cheaper, adding one history entry.
++      function changingDeparture() {
++        return resource.data.status == 'paid'
++            && request.resource.data.status == 'paid'
++            && onlyChanges(['tripId', 'seatNumber', 'totalAmount',
++                            'changeHistory', 'updatedAt'])
++            && request.resource.data.totalAmount is int
++            && request.resource.data.totalAmount > 0
++            && request.resource.data.totalAmount <= resource.data.totalAmount
++            && request.resource.data.changeHistory.size()
++                 == resource.data.get('changeHistory', []).size() + 1;
++      }
++
++      // Cancelling (Tickets & Trips) records the refund; it can never be
++      // more than was paid.
++      function validRefund() {
++        return !('refundAmount' in request.resource.data)
++            || (request.resource.data.refundAmount is int
++                && request.resource.data.refundAmount >= 0
++                && request.resource.data.refundAmount
++                     <= request.resource.data.totalAmount);
++      }
++
++      // Remove from history (Tickets & Trips): only cancelled or expired
++      // bookings, or paid ones whose trip has already arrived. Upcoming
++      // paid trips must be cancelled first, so refunds keep their record.
++      allow delete: if signedIn()
++                    && resource.data.userId == request.auth.uid
++                    && (resource.data.status in ['cancelled', 'expired']
++                        || (resource.data.status == 'paid'
++                            && tripHasArrived(resource.data.tripId)));
++
++      function tripHasArrived(tripId) {
++        let trip = get(/databases/$(database)/documents/trips/$(tripId)).data;
++        return trip.get('arrival', trip.get('arrivalTime', request.time))
++                 < request.time;
++      }
+     }
+ 
+     // ---------- payments (Booking & Payment, read by Escrow) ----------
