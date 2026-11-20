@@ -1,5 +1,13 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/widgets/placeholder_screen.dart';
+
+// TODO(teammate): the user's tickets and QR boarding passes.
+class TicketsScreen extends StatelessWidget {
+  const TicketsScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) => const PlaceholderScreen(title: 'Tickets');
 import 'package:bookme_summative_project/features/tickets/presentation/pages/my_trips_page.dart';
 import 'package:bookme_summative_project/features/tickets/presentation/tickets_navigation.dart';
 

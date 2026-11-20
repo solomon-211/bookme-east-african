@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "233973502316",
+    "firebase_url": "https://bookme-a73fd-default-rtdb.firebaseio.com",
+    "project_id": "bookme-a73fd",
+    "storage_bucket": "bookme-a73fd.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:233973502316:android:798eb6ffbb788700916349",
+        "android_client_info": {
+          "package_name": "com.example.bookme_summative_project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "233973502316-nh21csf5a2hqbtocjvl5epldlmtmmt68.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.bookme_summative_project",
+            "certificate_hash": "caccd02e74343cbd2bbbbe2d96f248221d84356e"
+          }
+        },
+        {
+          "client_id": "233973502316-kv4vuujoqp3lpidln4j2i8auu6ri02cu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyADcWnsaKojwS41AU0BnYzmiK0p7-MsMMs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "233973502316-kv4vuujoqp3lpidln4j2i8auu6ri02cu.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "233973502316-97dbhnlb0pluc7nu03roaao8ogd3li34.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.bookmeSummativeProject"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
