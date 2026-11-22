@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../core/theme/app_theme.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/validators.dart';
 import '../../../core/widgets/app_text_field.dart';
 import '../../../core/widgets/primary_button.dart';
@@ -73,14 +73,17 @@ class _OtpScreenState extends State<OtpScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text('Verify your number',
-                    style: Theme.of(context)
-                        .textTheme
-                        .headlineSmall
-                        ?.copyWith(fontWeight: FontWeight.w800)),
+                Text(
+                  'Verify your number',
+                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
                 const SizedBox(height: 8),
-                Text('Enter the 6-digit code sent to $phone',
-                    style: const TextStyle(color: AppColors.muted)),
+                Text(
+                  'Enter the 6-digit code sent to $phone',
+                  style: const TextStyle(color: AppColors.muted),
+                ),
                 const SizedBox(height: 24),
                 AppTextField(
                   key: const Key('otp_field'),
@@ -106,9 +109,11 @@ class _OtpScreenState extends State<OtpScreen> {
                 const SizedBox(height: 12),
                 TextButton(
                   onPressed: _remaining > 0 ? null : () => _resend(phone),
-                  child: Text(_remaining > 0
-                      ? 'Resend code in ${_remaining}s'
-                      : 'Resend code'),
+                  child: Text(
+                    _remaining > 0
+                        ? 'Resend code in ${_remaining}s'
+                        : 'Resend code',
+                  ),
                 ),
               ],
             ),

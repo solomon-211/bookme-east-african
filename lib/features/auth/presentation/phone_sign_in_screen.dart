@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../core/constants/countries.dart';
 import '../../../core/router/app_router.dart';
-import '../../../core/theme/app_theme.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/validators.dart';
 import '../../../core/widgets/app_text_field.dart';
 import '../../../core/widgets/primary_button.dart';
@@ -33,8 +33,8 @@ class _PhoneSignInScreenState extends State<PhoneSignInScreen> {
     if (!_formKey.currentState!.validate()) return;
     FocusScope.of(context).unfocus();
     context.read<AuthBloc>().add(
-          PhoneNumberSubmitted(Validators.toE164(_country.dialCode, _phone.text)),
-        );
+      PhoneNumberSubmitted(Validators.toE164(_country.dialCode, _phone.text)),
+    );
   }
 
   @override
@@ -58,11 +58,12 @@ class _PhoneSignInScreenState extends State<PhoneSignInScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Text('Enter your phone number',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headlineSmall
-                          ?.copyWith(fontWeight: FontWeight.w800)),
+                  Text(
+                    'Enter your phone number',
+                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
                   const SizedBox(height: 8),
                   const Text(
                     "We'll text you a 6-digit code to confirm it's you.",
@@ -70,7 +71,7 @@ class _PhoneSignInScreenState extends State<PhoneSignInScreen> {
                   ),
                   const SizedBox(height: 24),
                   DropdownButtonFormField<Country>(
-                    value: _country,
+                    initialValue: _country,
                     decoration: const InputDecoration(labelText: 'Country'),
                     items: [
                       for (final c in supportedCountries)
@@ -86,7 +87,9 @@ class _PhoneSignInScreenState extends State<PhoneSignInScreen> {
                     hint: '788 123 456',
                     keyboardType: TextInputType.phone,
                     textInputAction: TextInputAction.done,
-                    autofillHints: const [AutofillHints.telephoneNumberNational],
+                    autofillHints: const [
+                      AutofillHints.telephoneNumberNational,
+                    ],
                     inputFormatters: [
                       FilteringTextInputFormatter.allow(RegExp(r'[\d\s\-]')),
                     ],

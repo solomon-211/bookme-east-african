@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/router/app_router.dart';
-import '../../../core/theme/app_theme.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/validators.dart';
 import '../../../core/widgets/app_text_field.dart';
 import '../../../core/widgets/primary_button.dart';
@@ -46,16 +46,20 @@ class _LoginScreenState extends State<LoginScreen> {
     FocusScope.of(context).unfocus();
     final bloc = context.read<AuthBloc>();
     if (_isLogin) {
-      bloc.add(EmailSignInRequested(
-        email: _email.text.trim(),
-        password: _password.text,
-      ));
+      bloc.add(
+        EmailSignInRequested(
+          email: _email.text.trim(),
+          password: _password.text,
+        ),
+      );
     } else {
-      bloc.add(EmailRegisterRequested(
-        name: _name.text.trim(),
-        email: _email.text.trim(),
-        password: _password.text,
-      ));
+      bloc.add(
+        EmailRegisterRequested(
+          name: _name.text.trim(),
+          email: _email.text.trim(),
+          password: _password.text,
+        ),
+      );
     }
   }
 
@@ -72,9 +76,12 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text(_isLogin ? 'Welcome back' : 'Create your account',
-                    style: textTheme.headlineSmall
-                        ?.copyWith(fontWeight: FontWeight.w800)),
+                Text(
+                  _isLogin ? 'Welcome back' : 'Create your account',
+                  style: textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
                 const SizedBox(height: 8),
                 Text(
                   _isLogin
@@ -109,8 +116,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   controller: _password,
                   label: 'Password',
                   obscure: true,
-                  textInputAction:
-                      _isLogin ? TextInputAction.done : TextInputAction.next,
+                  textInputAction: _isLogin
+                      ? TextInputAction.done
+                      : TextInputAction.next,
                   autofillHints: [
                     _isLogin
                         ? AutofillHints.password
@@ -155,9 +163,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 TextButton(
                   key: const Key('toggle_mode'),
                   onPressed: _toggleMode,
-                  child: Text(_isLogin
-                      ? "Don't have an account? Register"
-                      : 'Already have an account? Log in'),
+                  child: Text(
+                    _isLogin
+                        ? "Don't have an account? Register"
+                        : 'Already have an account? Log in',
+                  ),
                 ),
               ],
             ),

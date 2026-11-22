@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/router/app_router.dart';
-import '../../../core/theme/app_theme.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../core/widgets/primary_button.dart';
 import '../bloc/auth_bloc.dart';
 
@@ -26,16 +26,22 @@ class WelcomeScreen extends StatelessWidget {
                 width: 84,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  color: AppColors.primary,
+                  color: AppColors.success,
                   borderRadius: BorderRadius.circular(24),
                 ),
-                child: const Icon(Icons.directions_bus_rounded,
-                    size: 44, color: Colors.white),
+                child: const Icon(
+                  Icons.directions_bus_rounded,
+                  size: 44,
+                  color: Colors.white,
+                ),
               ),
               const SizedBox(height: 28),
-              Text('BookMe East Africa',
-                  style: textTheme.headlineMedium
-                      ?.copyWith(fontWeight: FontWeight.w800)),
+              Text(
+                'BookMe East Africa',
+                style: textTheme.headlineMedium?.copyWith(
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
               const SizedBox(height: 10),
               Text(
                 'Compare operators, pick your seat, pay with mobile money '
@@ -59,9 +65,9 @@ class WelcomeScreen extends StatelessWidget {
                 builder: (context, state) => OutlinedButton.icon(
                   onPressed: state.isLoading
                       ? null
-                      : () => context
-                          .read<AuthBloc>()
-                          .add(const GoogleSignInRequested()),
+                      : () => context.read<AuthBloc>().add(
+                          const GoogleSignInRequested(),
+                        ),
                   icon: const Icon(Icons.g_mobiledata, size: 30),
                   label: const Text('Continue with Google'),
                 ),
