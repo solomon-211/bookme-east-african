@@ -1,46 +1,45 @@
 {
   "project_info": {
-    "project_number": "233973502316",
-    "firebase_url": "https://bookme-a73fd-default-rtdb.firebaseio.com",
-    "project_id": "bookme-a73fd",
-    "storage_bucket": "bookme-a73fd.firebasestorage.app"
+    "project_number": "339693601645",
+    "project_id": "bookme-east-africa",
+    "storage_bucket": "bookme-east-africa.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:233973502316:android:798eb6ffbb788700916349",
+        "mobilesdk_app_id": "1:339693601645:android:cc76d3ee9a59f07796d064",
         "android_client_info": {
           "package_name": "com.example.bookme_summative_project"
         }
       },
       "oauth_client": [
         {
-          "client_id": "233973502316-nh21csf5a2hqbtocjvl5epldlmtmmt68.apps.googleusercontent.com",
+          "client_id": "339693601645-0dl7faclp8k6crr0s1qu2r596ibdh01k.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.bookme_summative_project",
-            "certificate_hash": "caccd02e74343cbd2bbbbe2d96f248221d84356e"
+            "certificate_hash": "43aac7c84ca6bf98586f50d7f26c6c791bc5b148"
           }
         },
         {
-          "client_id": "233973502316-kv4vuujoqp3lpidln4j2i8auu6ri02cu.apps.googleusercontent.com",
+          "client_id": "339693601645-llgteul2vfl1cfu25i6itfli46l8i323.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyADcWnsaKojwS41AU0BnYzmiK0p7-MsMMs"
+          "current_key": "AIzaSyDX10TUsXKyp0XXhUNhtgSC_JzGV-nbTzo"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "233973502316-kv4vuujoqp3lpidln4j2i8auu6ri02cu.apps.googleusercontent.com",
+              "client_id": "339693601645-llgteul2vfl1cfu25i6itfli46l8i323.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "233973502316-97dbhnlb0pluc7nu03roaao8ogd3li34.apps.googleusercontent.com",
+              "client_id": "339693601645-u6ngfp28thlgatp1tktnbaifi20v1rgi.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
                 "bundle_id": "com.example.bookmeSummativeProject"

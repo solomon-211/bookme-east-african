@@ -1,7 +1,7 @@
 # Search: ERD and database architecture
 
 Owner: Search (Home search, Results, Filters, Waitlist, Trip details).
-Database: Cloud Firestore (project `bookme-a73fd`).
+Database: Cloud Firestore (project `bookme-east-africa`).
 
 ## 1. Entity relationship diagram
 
