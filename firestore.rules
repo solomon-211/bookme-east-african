@@ -278,12 +278,17 @@ service cloud.firestore {
 
     // ---------- waitlist (Search) ----------
 
+    // The id is userId_tripId, so one person has at most one entry per
+    // trip; tapping "Notify me" again just rewrites their own entry.
     match /waitlist/{entryId} {
       allow read, delete: if signedIn()
                           && resource.data.userId == request.auth.uid;
-      allow create: if signedIn()
-                    && request.resource.data.userId == request.auth.uid;
-      allow update: if false;
+      allow create, update: if signedIn()
+                    && request.resource.data.userId == request.auth.uid
+                    && entryId == request.auth.uid + '_'
+                                    + request.resource.data.tripId
+                    && (resource == null
+                        || resource.data.userId == request.auth.uid);
     }
 
     // Anything not listed above is closed.
