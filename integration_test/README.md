@@ -35,18 +35,9 @@ and Booking & Payment create), then acts as that user.
 
 ## Result (19 Nov 2026, iPhone 17 simulator, iOS 26.5)
 
-| Test | Rules on `main` | With the proposed rules below |
-|---|---|---|
-| My Trips shows the paid booking | Pass | Pass |
-| Cancel records the refund and frees the seat | Pass | Pass |
-| A second cancel is refused | Pass | Pass |
-| Change date lists the other departures | Pass | Pass |
-| Change date moves the booking and both seats | Permission denied | Pass |
-| A cancelled trip can be removed from history | Permission denied | Pass |
-
-The rules on `main` don't allow a booking's trip, seat and price to change,
-or a booking to be deleted. The proposed additions (for the owner of the
-rules) allow exactly:
+All six tests pass with the team's `firestore.rules`. Change date and
+"remove from history" originally failed with permission denied; the rules
+now allow exactly:
 
 * A paid booking moving to another departure at the same price or cheaper,
   adding one `changeHistory` entry, and taking a free seat whose
@@ -54,6 +45,3 @@ rules) allow exactly:
 * Deleting your own booking once it's cancelled or expired, or paid with
   the trip already arrived.
 * A recorded `refundAmount` that is never more than the booking total.
-
-The exact change is in `firestore_rules_proposal.diff` (apply from the
-project root with `git apply integration_test/firestore_rules_proposal.diff`).
