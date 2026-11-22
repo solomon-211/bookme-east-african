@@ -18,7 +18,7 @@ class AppUser extends Equatable {
   final String? phoneNumber;
   final String? photoUrl;
 
-  /// Key of [paymentMethods] (e.g. `mtn_momo`). Stored in Firestore only.
+  /// Preferred payment key, e.g. `mtn_momo`. Stored in Firestore only.
   final String? preferredPayment;
 
   factory AppUser.fromFirebase(
