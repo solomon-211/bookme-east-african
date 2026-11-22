@@ -59,7 +59,8 @@ class Booking extends Equatable {
 
   /// Confirmed and not yet departed: can still be edited or cancelled.
   bool get isActive =>
-      status == BookingStatus.confirmed && departureTime.isAfter(DateTime.now());
+      status == BookingStatus.confirmed &&
+      departureTime.isAfter(DateTime.now());
 
   String get displayStatus {
     if (status == BookingStatus.cancelled) return 'Cancelled';
@@ -91,7 +92,13 @@ class Booking extends Equatable {
 
   @override
   List<Object?> get props => [
-        id, userId, tripId, passengerName, passengerPhone,
-        paymentStatus, status, departureTime,
-      ];
+    id,
+    userId,
+    tripId,
+    passengerName,
+    passengerPhone,
+    paymentStatus,
+    status,
+    departureTime,
+  ];
 }

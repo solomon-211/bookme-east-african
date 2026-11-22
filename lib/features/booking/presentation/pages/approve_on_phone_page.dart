@@ -126,8 +126,9 @@ class ApproveOnPhonePage extends StatelessWidget {
                 Text(
                   body,
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodyMedium
-                      ?.copyWith(color: AppColors.muted),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodyMedium?.copyWith(color: AppColors.muted),
                 ),
                 const SizedBox(height: 20),
                 _StatusSteps(status: state.status, isRequest: state.isRequest),

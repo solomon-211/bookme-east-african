@@ -69,7 +69,10 @@ class _WaitlistDialogState extends State<WaitlistDialog> {
 
   Future<void> _join() async {
     if (!(_formKey.currentState?.validate() ?? false)) return;
-    final entry = await context.read<WaitlistCubit>().join(widget.trip, _phone.text);
+    final entry = await context.read<WaitlistCubit>().join(
+      widget.trip,
+      _phone.text,
+    );
     if (entry != null && mounted) {
       setState(() {
         _joined = true;
@@ -102,9 +105,14 @@ class _WaitlistDialogState extends State<WaitlistDialog> {
                 child: Container(
                   width: 52,
                   height: 52,
-                  decoration: const BoxDecoration(color: AppColors.lime, shape: BoxShape.circle),
+                  decoration: const BoxDecoration(
+                    color: AppColors.lime,
+                    shape: BoxShape.circle,
+                  ),
                   child: Icon(
-                    _joined ? Icons.notifications_active : Icons.notifications_none,
+                    _joined
+                        ? Icons.notifications_active
+                        : Icons.notifications_none,
                     color: AppColors.ink,
                   ),
                 ),
@@ -115,16 +123,20 @@ class _WaitlistDialogState extends State<WaitlistDialog> {
                 liveRegion: true,
                 child: Text(
                   _joined ? 'You\'re on the list.' : 'Get a seat alert',
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800, color: palette.text),
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w800,
+                    color: palette.text,
+                  ),
                 ),
               ),
               const SizedBox(height: 8),
               Text(
                 _joined
                     ? 'We\'ll notify you if a seat opens on ${trip.operatorName}. '
-                        'An alert doesn\'t reserve a seat.'
+                          'An alert doesn\'t reserve a seat.'
                     : 'This bus is fully booked. We\'ll text you if a seat opens. '
-                        'Joining doesn\'t reserve a seat.',
+                          'Joining doesn\'t reserve a seat.',
                 style: TextStyle(color: palette.muted),
               ),
               const SizedBox(height: 16),
@@ -137,8 +149,13 @@ class _WaitlistDialogState extends State<WaitlistDialog> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('${trip.origin} → ${trip.destination}',
-                        style: TextStyle(fontWeight: FontWeight.w700, color: palette.text)),
+                    Text(
+                      '${trip.origin} → ${trip.destination}',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        color: palette.text,
+                      ),
+                    ),
                     const SizedBox(height: 2),
                     Text(
                       '${Formatters.shortDate(trip.departure)} · '
@@ -168,11 +185,17 @@ class _WaitlistDialogState extends State<WaitlistDialog> {
               ),
               if (error != null && !_joined) ...[
                 const SizedBox(height: 8),
-                Text(error, style: const TextStyle(color: AppColors.error, fontSize: 13)),
+                Text(
+                  error,
+                  style: const TextStyle(color: AppColors.error, fontSize: 13),
+                ),
               ],
               const SizedBox(height: 16),
               if (_joined) ...[
-                PrimaryButton(label: 'Done', onPressed: () => Navigator.of(context).pop()),
+                PrimaryButton(
+                  label: 'Done',
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();

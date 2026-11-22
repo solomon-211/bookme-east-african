@@ -55,7 +55,9 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
 
   static SearchState _initialState(City origin, DateTime now) {
     final today = SearchQuery.dayOf(now);
-    final destination = origin == Cities.kampala ? Cities.kigali : Cities.kampala;
+    final destination = origin == Cities.kampala
+        ? Cities.kigali
+        : Cities.kampala;
     return SearchState(
       query: SearchQuery(origin: origin, destination: destination, date: today),
       windowStart: today,
@@ -64,7 +66,10 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     );
   }
 
-  Future<void> _onStarted(SearchStarted event, Emitter<SearchState> emit) async {
+  Future<void> _onStarted(
+    SearchStarted event,
+    Emitter<SearchState> emit,
+  ) async {
     emit(state.copyWith(recentRoutes: _recentRoutes?.load()));
     try {
       emit(state.copyWith(operators: await _repository.operators()));
@@ -124,7 +129,10 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     Emitter<SearchState> emit,
   ) {
     final adults = event.adults.clamp(1, SearchQuery.maxPassengers);
-    final children = event.children.clamp(0, SearchQuery.maxPassengers - adults);
+    final children = event.children.clamp(
+      0,
+      SearchQuery.maxPassengers - adults,
+    );
     _setQuery(emit, state.query.copyWith(adults: adults, children: children));
   }
 
@@ -187,10 +195,8 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     emit(state.copyWith(filter: event.filter));
   }
 
-  Future<void> _onRefreshed(
-    SearchRefreshed event,
-    Emitter<SearchState> emit,
-  ) => _load(emit, day: state.selectedDay);
+  Future<void> _onRefreshed(SearchRefreshed event, Emitter<SearchState> emit) =>
+      _load(emit, day: state.selectedDay);
 
   void _setQuery(Emitter<SearchState> emit, SearchQuery query) {
     emit(state.copyWith(query: query, clearFormError: true));
@@ -203,7 +209,11 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     // The strip starts the day before the chosen date (never in the past).
     var start = DateTime(day.year, day.month, day.day - 1);
     if (start.isBefore(today)) start = today;
-    final end = DateTime(start.year, start.month, start.day + SearchState.windowDays);
+    final end = DateTime(
+      start.year,
+      start.month,
+      start.day + SearchState.windowDays,
+    );
 
     emit(
       state.copyWith(

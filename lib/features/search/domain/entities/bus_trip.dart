@@ -121,9 +121,11 @@ class BusTrip extends Equatable {
   bool get isAlmostFull => !isFull && seatsAvailable <= 15;
 
   /// Arrives on a later calendar day than it leaves.
-  bool get isOvernight =>
-      DateTime(arrival.year, arrival.month, arrival.day)
-          .isAfter(DateTime(departure.year, departure.month, departure.day));
+  bool get isOvernight => DateTime(
+    arrival.year,
+    arrival.month,
+    arrival.day,
+  ).isAfter(DateTime(departure.year, departure.month, departure.day));
 
   bool isBookable(DateTime now) =>
       !isCancelled && !isFull && departure.isAfter(now);

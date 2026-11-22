@@ -66,7 +66,8 @@ class WaitlistCubit extends Cubit<WaitlistState> {
   }
 
   /// `null` if [phone] can receive the SMS, otherwise what to fix.
-  static String? validatePhone(String? phone) => PassengerValidators.phone(phone);
+  static String? validatePhone(String? phone) =>
+      PassengerValidators.phone(phone);
 
   /// Joins [trip]'s waitlist. Returns the entry, or `null` on failure
   /// (the reason is in [WaitlistState.errorMessage]).
@@ -84,10 +85,7 @@ class WaitlistCubit extends Cubit<WaitlistState> {
         phone: PassengerValidators.normalizePhone(phone),
       );
       // Shown straight away; the live stream confirms it shortly after.
-      final entries = [
-        entry,
-        ...state.entries.where((e) => e.id != entry.id),
-      ];
+      final entries = [entry, ...state.entries.where((e) => e.id != entry.id)];
       emit(state.copyWith(entries: entries, clearBusy: true));
       return entry;
     } on SearchFailure catch (e) {

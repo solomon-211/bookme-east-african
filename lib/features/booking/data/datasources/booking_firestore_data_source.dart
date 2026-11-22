@@ -62,10 +62,9 @@ class BookingFirestoreDataSource implements BookingDataSource {
     final uid = _uid;
     final now = _now();
 
-    final free = await _seats(trip.tripId)
-        .where('status', isEqualTo: 'available')
-        .limit(_candidateLimit)
-        .get();
+    final free = await _seats(
+      trip.tripId,
+    ).where('status', isEqualTo: 'available').limit(_candidateLimit).get();
 
     final candidates = [...free.docs, ...await _staleHolds(trip.tripId, now)];
     if (candidates.isEmpty) {

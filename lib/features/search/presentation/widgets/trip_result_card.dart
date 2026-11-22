@@ -282,9 +282,16 @@ class AmenityChip extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(SearchFormat.amenityIcon(amenity), size: 15, color: palette.text),
+          Icon(
+            SearchFormat.amenityIcon(amenity),
+            size: 15,
+            color: palette.text,
+          ),
           const SizedBox(width: 6),
-          Text(amenity.label, style: TextStyle(fontSize: 13, color: palette.text)),
+          Text(
+            amenity.label,
+            style: TextStyle(fontSize: 13, color: palette.text),
+          ),
         ],
       ),
     );

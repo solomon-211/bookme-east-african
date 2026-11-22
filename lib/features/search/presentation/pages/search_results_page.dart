@@ -92,7 +92,8 @@ class _DateStrip extends StatelessWidget {
           return Semantics(
             selected: selected,
             button: true,
-            label: '${Formatters.shortDate(day)}, '
+            label:
+                '${Formatters.shortDate(day)}, '
                 '${fare == null ? 'no seats' : 'from ${Formatters.money(fare, state.currency)}'}',
             excludeSemantics: true,
             child: Material(
@@ -112,8 +113,21 @@ class _DateStrip extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(weekday, style: TextStyle(fontSize: 11, color: selected ? Colors.white70 : palette.muted)),
-                      Text('${day.day}', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800, color: fg)),
+                      Text(
+                        weekday,
+                        style: TextStyle(
+                          fontSize: 11,
+                          color: selected ? Colors.white70 : palette.muted,
+                        ),
+                      ),
+                      Text(
+                        '${day.day}',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w800,
+                          color: fg,
+                        ),
+                      ),
                       Text(
                         fare == null ? '—' : SearchFormat.compact(fare),
                         style: TextStyle(
@@ -238,7 +252,8 @@ class _Body extends StatelessWidget {
       return _Message(
         icon: Icons.filter_alt_off_outlined,
         title: 'No buses match your filters',
-        body: '${state.dayTrips.length} buses run this day. '
+        body:
+            '${state.dayTrips.length} buses run this day. '
             'Loosen a filter to see them.',
         action: 'Reset filters',
         onAction: () => bloc.add(const SearchFilterChanged(TripFilter.none)),
@@ -321,10 +336,18 @@ class _Message extends StatelessWidget {
         Text(
           title,
           textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: palette.text),
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w700,
+            color: palette.text,
+          ),
         ),
         const SizedBox(height: 8),
-        Text(body, textAlign: TextAlign.center, style: TextStyle(color: palette.muted)),
+        Text(
+          body,
+          textAlign: TextAlign.center,
+          style: TextStyle(color: palette.muted),
+        ),
         const SizedBox(height: 20),
         PrimaryButton(
           label: action,

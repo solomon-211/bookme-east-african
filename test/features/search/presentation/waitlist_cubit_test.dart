@@ -14,8 +14,10 @@ void main() {
   setUp(() {
     repository = InMemoryWaitlistRepository(userId: 'u1', clock: () => now);
     cubit = WaitlistCubit(repository: repository)..start();
-    fullTrip = InMemorySearchRepository.seedTrips(now, days: 1)
-        .firstWhere((t) => t.isFull);
+    fullTrip = InMemorySearchRepository.seedTrips(
+      now,
+      days: 1,
+    ).firstWhere((t) => t.isFull);
   });
 
   tearDown(() async {

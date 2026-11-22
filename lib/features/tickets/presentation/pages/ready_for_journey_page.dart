@@ -71,9 +71,9 @@ class ReadyForJourneyView extends StatelessWidget {
     return BlocConsumer<ReadyForJourneyCubit, ReadyForJourneyState>(
       listenWhen: (before, after) =>
           after.message != null && before.message != after.message,
-      listener: (context, state) =>
-          ScaffoldMessenger.of(context)
-              .showSnackBar(SnackBar(content: Text(state.message!))),
+      listener: (context, state) => ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(state.message!))),
       builder: (context, state) {
         return Scaffold(
           backgroundColor: AppColors.surface,

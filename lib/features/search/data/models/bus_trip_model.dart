@@ -33,11 +33,14 @@ class BusTripModel {
         operatorRating: (map['operatorRating'] as num?)?.toDouble() ?? 0,
         operatorVerified: (map['operatorVerified'] ?? false) as bool,
         origin: origin,
-        fromCode: (map['fromCode'] ?? fromCity?.code ?? _code(origin)) as String,
-        fromStation: (map['fromStation'] ?? fromCity?.station ?? origin) as String,
+        fromCode:
+            (map['fromCode'] ?? fromCity?.code ?? _code(origin)) as String,
+        fromStation:
+            (map['fromStation'] ?? fromCity?.station ?? origin) as String,
         destination: destination,
         toCode: (map['toCode'] ?? toCity?.code ?? _code(destination)) as String,
-        toStation: (map['toStation'] ?? toCity?.station ?? destination) as String,
+        toStation:
+            (map['toStation'] ?? toCity?.station ?? destination) as String,
         departure: departure,
         arrival: arrival,
         price: (map['price'] as num).toInt(),

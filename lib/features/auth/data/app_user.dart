@@ -25,15 +25,14 @@ class AppUser extends Equatable {
     User user, {
     String? displayName,
     String? preferredPayment,
-  }) =>
-      AppUser(
-        uid: user.uid,
-        displayName: displayName ?? user.displayName,
-        email: user.email,
-        phoneNumber: user.phoneNumber,
-        photoUrl: user.photoURL,
-        preferredPayment: preferredPayment,
-      );
+  }) => AppUser(
+    uid: user.uid,
+    displayName: displayName ?? user.displayName,
+    email: user.email,
+    phoneNumber: user.phoneNumber,
+    photoUrl: user.photoURL,
+    preferredPayment: preferredPayment,
+  );
 
   /// Name to show in the UI, falling back to email/phone.
   String get label {
@@ -44,6 +43,12 @@ class AppUser extends Equatable {
   }
 
   @override
-  List<Object?> get props =>
-      [uid, displayName, email, phoneNumber, photoUrl, preferredPayment];
+  List<Object?> get props => [
+    uid,
+    displayName,
+    email,
+    phoneNumber,
+    photoUrl,
+    preferredPayment,
+  ];
 }

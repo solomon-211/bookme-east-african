@@ -79,9 +79,9 @@ class _AlertsView extends StatelessWidget {
         child: BlocConsumer<AlertsCubit, AlertsState>(
           listenWhen: (a, b) =>
               b.errorMessage != null && a.errorMessage != b.errorMessage,
-          listener: (context, state) =>
-              ScaffoldMessenger.of(context)
-                  .showSnackBar(SnackBar(content: Text(state.errorMessage!))),
+          listener: (context, state) => ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(state.errorMessage!))),
           builder: (context, state) {
             final visible = state.visibleAlerts;
             final time = now();

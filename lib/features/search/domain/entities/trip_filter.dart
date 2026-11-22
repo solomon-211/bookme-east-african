@@ -144,5 +144,11 @@ class TripFilter extends Equatable {
   }
 
   @override
-  List<Object?> get props => [window, minPrice, maxPrice, operatorIds, amenities];
+  List<Object?> get props => [
+    window,
+    minPrice,
+    maxPrice,
+    operatorIds,
+    amenities,
+  ];
 }

@@ -12,8 +12,8 @@ part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc({required AuthRepository repository})
-      : _repo = repository,
-        super(const AuthState.unknown()) {
+    : _repo = repository,
+      super(const AuthState.unknown()) {
     on<AuthStarted>(_onStarted);
     on<_AuthUserChanged>(_onUserChanged);
     on<EmailSignInRequested>(_onEmailSignIn);
@@ -96,10 +96,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(state.copyWith(isLoading: true, clearMessages: true));
     try {
       await _repo.sendPasswordReset(event.email);
-      emit(state.copyWith(
-        isLoading: false,
-        infoMessage: 'Reset link sent. Check your inbox.',
-      ));
+      emit(
+        state.copyWith(
+          isLoading: false,
+          infoMessage: 'Reset link sent. Check your inbox.',
+        ),
+      );
     } on AuthFailure catch (e) {
       emit(state.copyWith(isLoading: false, errorMessage: e.message));
     }
@@ -126,11 +128,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     PhoneNumberSubmitted event,
     Emitter<AuthState> emit,
   ) async {
-    emit(state.copyWith(
-      isLoading: true,
-      clearMessages: true,
-      phoneNumber: event.phoneNumber,
-    ));
+    emit(
+      state.copyWith(
+        isLoading: true,
+        clearMessages: true,
+        phoneNumber: event.phoneNumber,
+      ),
+    );
     try {
       await _repo.verifyPhone(
         phoneNumber: event.phoneNumber,
@@ -145,11 +149,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   void _onPhoneCodeSent(_PhoneCodeSent event, Emitter<AuthState> emit) {
-    emit(state.copyWith(
-      isLoading: false,
-      verificationId: event.verificationId,
-      resendToken: event.resendToken,
-    ));
+    emit(
+      state.copyWith(
+        isLoading: false,
+        verificationId: event.verificationId,
+        resendToken: event.resendToken,
+      ),
+    );
   }
 
   Future<void> _onPhoneAutoVerified(

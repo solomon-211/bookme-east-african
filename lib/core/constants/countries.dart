@@ -17,12 +17,7 @@ const supportedCountries = <Country>[
 ];
 
 /// Cities served by the demo data.
-const supportedCities = <String>[
-  'Kigali',
-  'Kampala',
-  'Nairobi',
-  'Bujumbura',
-];
+const supportedCities = <String>['Kigali', 'Kampala', 'Nairobi', 'Bujumbura'];
 
 /// Payment methods (key stored in Firestore -> label shown in the UI).
 const paymentMethods = <String, String>{

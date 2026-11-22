@@ -91,8 +91,9 @@ class BookingFlow {
 
   /// Swaps the current screen, e.g. when toggling "Someone else is paying".
   static Future<T?> replace<T>(BuildContext context, Widget page) {
-    return Navigator.of(context)
-        .pushReplacement<T, Object?>(_shared(context, page));
+    return Navigator.of(
+      context,
+    ).pushReplacement<T, Object?>(_shared(context, page));
   }
 
   /// Payment done: removes every booking screen from the back stack and

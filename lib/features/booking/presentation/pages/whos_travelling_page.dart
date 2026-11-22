@@ -87,8 +87,9 @@ class _WhosTravellingPageState extends State<WhosTravellingPage> {
 
   void _onPassengerChanged(BuildContext context, PassengerState state) {
     if (state.message != null) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(state.message!)));
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(state.message!)));
       return;
     }
     if (state.status == PassengerFormStatus.saved) {
@@ -223,8 +224,9 @@ class _NationalityField extends StatelessWidget {
       children: [
         Text(
           'Nationality',
-          style: Theme.of(context).textTheme.bodySmall
-              ?.copyWith(color: AppColors.muted),
+          style: Theme.of(
+            context,
+          ).textTheme.bodySmall?.copyWith(color: AppColors.muted),
         ),
         const SizedBox(height: 6),
         DropdownButtonFormField<String>(

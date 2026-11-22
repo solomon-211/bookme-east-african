@@ -59,8 +59,9 @@ class ChangeDateView extends StatelessWidget {
         }
         final message = state.message;
         if (message != null && state.status != ChangeDateStatus.failed) {
-          ScaffoldMessenger.of(context)
-              .showSnackBar(SnackBar(content: Text(message)));
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(message)));
         }
       },
       builder: (context, state) {

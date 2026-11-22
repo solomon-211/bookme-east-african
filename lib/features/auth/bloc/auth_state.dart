@@ -15,10 +15,9 @@ class AuthState extends Equatable {
   });
 
   const AuthState.unknown() : this();
-  const AuthState.unauthenticated()
-      : this(status: AuthStatus.unauthenticated);
+  const AuthState.unauthenticated() : this(status: AuthStatus.unauthenticated);
   const AuthState.authenticated(AppUser user)
-      : this(status: AuthStatus.authenticated, user: user);
+    : this(status: AuthStatus.authenticated, user: user);
 
   final AuthStatus status;
   final AppUser? user;
@@ -52,21 +51,22 @@ class AuthState extends Equatable {
       errorMessage: clearMessages ? null : (errorMessage ?? this.errorMessage),
       infoMessage: clearMessages ? null : (infoMessage ?? this.infoMessage),
       phoneNumber: clearPhoneFlow ? null : (phoneNumber ?? this.phoneNumber),
-      verificationId:
-          clearPhoneFlow ? null : (verificationId ?? this.verificationId),
+      verificationId: clearPhoneFlow
+          ? null
+          : (verificationId ?? this.verificationId),
       resendToken: clearPhoneFlow ? null : (resendToken ?? this.resendToken),
     );
   }
 
   @override
   List<Object?> get props => [
-        status,
-        user,
-        isLoading,
-        errorMessage,
-        infoMessage,
-        phoneNumber,
-        verificationId,
-        resendToken,
-      ];
+    status,
+    user,
+    isLoading,
+    errorMessage,
+    infoMessage,
+    phoneNumber,
+    verificationId,
+    resendToken,
+  ];
 }

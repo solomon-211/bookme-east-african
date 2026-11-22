@@ -56,10 +56,12 @@ class _BookMeAppState extends State<BookMeApp> {
             if (text == null) return;
             messengerKey.currentState
               ?..hideCurrentSnackBar()
-              ..showSnackBar(SnackBar(
-                content: Text(text),
-                behavior: SnackBarBehavior.floating,
-              ));
+              ..showSnackBar(
+                SnackBar(
+                  content: Text(text),
+                  behavior: SnackBarBehavior.floating,
+                ),
+              );
           },
           child: BlocBuilder<SettingsCubit, SettingsState>(
             buildWhen: (a, b) => a.themeMode != b.themeMode,

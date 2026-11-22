@@ -68,8 +68,10 @@ class DefaultFirebaseOptions {
     projectId: 'bookme-a73fd',
     databaseURL: 'https://bookme-a73fd-default-rtdb.firebaseio.com',
     storageBucket: 'bookme-a73fd.firebasestorage.app',
-    androidClientId: '233973502316-nh21csf5a2hqbtocjvl5epldlmtmmt68.apps.googleusercontent.com',
-    iosClientId: '233973502316-97dbhnlb0pluc7nu03roaao8ogd3li34.apps.googleusercontent.com',
+    androidClientId:
+        '233973502316-nh21csf5a2hqbtocjvl5epldlmtmmt68.apps.googleusercontent.com',
+    iosClientId:
+        '233973502316-97dbhnlb0pluc7nu03roaao8ogd3li34.apps.googleusercontent.com',
     iosBundleId: 'com.example.bookmeSummativeProject',
   );
   static const FirebaseOptions macos = FirebaseOptions(
@@ -79,8 +81,10 @@ class DefaultFirebaseOptions {
     projectId: 'bookme-a73fd',
     databaseURL: 'https://bookme-a73fd-default-rtdb.firebaseio.com',
     storageBucket: 'bookme-a73fd.firebasestorage.app',
-    androidClientId: '233973502316-nh21csf5a2hqbtocjvl5epldlmtmmt68.apps.googleusercontent.com',
-    iosClientId: '233973502316-97dbhnlb0pluc7nu03roaao8ogd3li34.apps.googleusercontent.com',
+    androidClientId:
+        '233973502316-nh21csf5a2hqbtocjvl5epldlmtmmt68.apps.googleusercontent.com',
+    iosClientId:
+        '233973502316-97dbhnlb0pluc7nu03roaao8ogd3li34.apps.googleusercontent.com',
     iosBundleId: 'com.example.bookmeSummativeProject',
   );
 }

@@ -99,8 +99,9 @@ class _RequestPaymentPageState extends State<RequestPaymentPage> {
   ) async {
     if (ModalRoute.of(context)?.isCurrent != true) return;
     if (state.message != null && state.status == PaymentFlowStatus.idle) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(state.message!)));
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(state.message!)));
       return;
     }
     final booking = context.read<SeatHoldCubit>().state.booking;

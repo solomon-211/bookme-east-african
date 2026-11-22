@@ -43,9 +43,10 @@ class RecentRoutesStore {
 
   /// Puts [route] first, removes duplicates and keeps [maxRoutes].
   Future<List<RecentRoute>> remember(RecentRoute route) async {
-    final routes = [route, ...load().where((r) => r != route)]
-        .take(maxRoutes)
-        .toList();
+    final routes = [
+      route,
+      ...load().where((r) => r != route),
+    ].take(maxRoutes).toList();
     await _prefs.setStringList(_key, [
       for (final r in routes) '${r.origin.name}|${r.destination.name}',
     ]);

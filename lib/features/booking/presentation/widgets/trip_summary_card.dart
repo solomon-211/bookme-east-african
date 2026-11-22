@@ -158,8 +158,9 @@ class _JourneyLine extends StatelessWidget {
           children: [
             Text(
               label,
-              style: Theme.of(context).textTheme.labelSmall
-                  ?.copyWith(color: color),
+              style: Theme.of(
+                context,
+              ).textTheme.labelSmall?.copyWith(color: color),
             ),
             const SizedBox(height: 4),
             Row(

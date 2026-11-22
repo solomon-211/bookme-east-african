@@ -44,24 +44,51 @@ void main() {
   group('DepartureWindow', () {
     test('morning is 06:00 up to 11:59', () {
       expect(DepartureWindow.morning.contains(DateTime(2026, 1, 1, 6)), isTrue);
-      expect(DepartureWindow.morning.contains(DateTime(2026, 1, 1, 11, 59)), isTrue);
-      expect(DepartureWindow.morning.contains(DateTime(2026, 1, 1, 12)), isFalse);
-      expect(DepartureWindow.morning.contains(DateTime(2026, 1, 1, 5, 59)), isFalse);
+      expect(
+        DepartureWindow.morning.contains(DateTime(2026, 1, 1, 11, 59)),
+        isTrue,
+      );
+      expect(
+        DepartureWindow.morning.contains(DateTime(2026, 1, 1, 12)),
+        isFalse,
+      );
+      expect(
+        DepartureWindow.morning.contains(DateTime(2026, 1, 1, 5, 59)),
+        isFalse,
+      );
     });
 
     test('afternoon is 12:00 up to 17:59', () {
-      expect(DepartureWindow.afternoon.contains(DateTime(2026, 1, 1, 12)), isTrue);
-      expect(DepartureWindow.afternoon.contains(DateTime(2026, 1, 1, 17, 59)), isTrue);
-      expect(DepartureWindow.afternoon.contains(DateTime(2026, 1, 1, 18)), isFalse);
+      expect(
+        DepartureWindow.afternoon.contains(DateTime(2026, 1, 1, 12)),
+        isTrue,
+      );
+      expect(
+        DepartureWindow.afternoon.contains(DateTime(2026, 1, 1, 17, 59)),
+        isTrue,
+      );
+      expect(
+        DepartureWindow.afternoon.contains(DateTime(2026, 1, 1, 18)),
+        isFalse,
+      );
     });
 
     test('night wraps past midnight: 18:00 to 05:59', () {
       expect(DepartureWindow.night.contains(DateTime(2026, 1, 1, 18)), isTrue);
-      expect(DepartureWindow.night.contains(DateTime(2026, 1, 1, 23, 59)), isTrue);
+      expect(
+        DepartureWindow.night.contains(DateTime(2026, 1, 1, 23, 59)),
+        isTrue,
+      );
       expect(DepartureWindow.night.contains(DateTime(2026, 1, 1, 0)), isTrue);
-      expect(DepartureWindow.night.contains(DateTime(2026, 1, 1, 5, 59)), isTrue);
+      expect(
+        DepartureWindow.night.contains(DateTime(2026, 1, 1, 5, 59)),
+        isTrue,
+      );
       expect(DepartureWindow.night.contains(DateTime(2026, 1, 1, 6)), isFalse);
-      expect(DepartureWindow.night.contains(DateTime(2026, 1, 1, 17, 59)), isFalse);
+      expect(
+        DepartureWindow.night.contains(DateTime(2026, 1, 1, 17, 59)),
+        isFalse,
+      );
     });
 
     test('any matches every hour', () {
@@ -94,7 +121,10 @@ void main() {
     });
 
     test('empty operator set means every operator', () {
-      expect(const TripFilter().matches(_trip('a', operatorId: 'jaguar')), isTrue);
+      expect(
+        const TripFilter().matches(_trip('a', operatorId: 'jaguar')),
+        isTrue,
+      );
       const onlyTrinity = TripFilter(operatorIds: {'trinity'});
       expect(onlyTrinity.matches(_trip('a', operatorId: 'trinity')), isTrue);
       expect(onlyTrinity.matches(_trip('b', operatorId: 'jaguar')), isFalse);
@@ -107,7 +137,10 @@ void main() {
       expect(wantsWifiAndUsb.matches(_trip('a')), isFalse);
       expect(
         wantsWifiAndUsb.matches(
-          _trip('b', amenities: {Amenity.wifi, Amenity.usbCharging, Amenity.ac}),
+          _trip(
+            'b',
+            amenities: {Amenity.wifi, Amenity.usbCharging, Amenity.ac},
+          ),
         ),
         isTrue,
       );
@@ -147,10 +180,11 @@ void main() {
         _trip('late', hour: 22),
         _trip('early', hour: 19),
       ];
-      expect(
-        _ids(TripFilter.none.apply(trips, now: now)),
-        ['early', 'late', 'full-early'],
-      );
+      expect(_ids(TripFilter.none.apply(trips, now: now)), [
+        'early',
+        'late',
+        'full-early',
+      ]);
     });
 
     test('applies the filter to full buses too', () {

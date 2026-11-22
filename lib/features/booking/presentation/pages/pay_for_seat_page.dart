@@ -66,8 +66,9 @@ class _PayForSeatPageState extends State<PayForSeatPage> {
     }
     if (!_isOnTop) return;
     if (state.message != null && state.status == PaymentFlowStatus.idle) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(state.message!)));
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(state.message!)));
     }
     if (state.status == PaymentFlowStatus.awaitingApproval) {
       BookingFlow.push<void>(context, const ApproveOnPhonePage());
@@ -114,8 +115,9 @@ class _PayForSeatPageState extends State<PayForSeatPage> {
                   ' + ${Formatters.money(trip.serviceFee, trip.currency)} '
                   'service fee. No other charges.',
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodySmall
-                      ?.copyWith(color: AppColors.muted),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodySmall?.copyWith(color: AppColors.muted),
                 ),
               ],
             ),

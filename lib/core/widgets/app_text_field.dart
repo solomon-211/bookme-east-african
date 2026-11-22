@@ -54,14 +54,15 @@ class _AppTextFieldState extends State<AppTextField> {
         labelText: widget.label,
         hintText: widget.hint,
         counterText: '',
-        prefixIcon:
-            widget.prefixIcon == null ? null : Icon(widget.prefixIcon),
+        prefixIcon: widget.prefixIcon == null ? null : Icon(widget.prefixIcon),
         suffixIcon: widget.obscure
             ? IconButton(
                 tooltip: _hidden ? 'Show password' : 'Hide password',
-                icon: Icon(_hidden
-                    ? Icons.visibility_outlined
-                    : Icons.visibility_off_outlined),
+                icon: Icon(
+                  _hidden
+                      ? Icons.visibility_outlined
+                      : Icons.visibility_off_outlined,
+                ),
                 onPressed: () => setState(() => _hidden = !_hidden),
               )
             : null,
