@@ -276,14 +276,16 @@ class _TripTabs extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<TripsTabCubit>();
-    return Row(
+    // Wrap, not Row, so the pills drop to a new line on narrow phones.
+    return Wrap(
+      spacing: 8,
+      runSpacing: 8,
       children: [
         _TabPill(
           label: 'Upcoming · $upcomingCount',
           selected: selected == TripsTab.upcoming,
           onTap: () => cubit.select(TripsTab.upcoming),
         ),
-        const SizedBox(width: 8),
         _TabPill(
           label: 'Past · $pastCount',
           selected: selected == TripsTab.past,

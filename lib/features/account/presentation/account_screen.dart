@@ -161,7 +161,15 @@ class _ProfileCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final palette = AppPalette.of(context);
-    final status = profile.phoneVerified ? 'Phone verified' : 'Not verified';
+    final status = profile.phone.isEmpty
+        ? 'Add your phone'
+        : profile.phoneVerified
+        ? 'Phone verified'
+        : 'Phone not verified';
+    // Google and email sign-ins have no phone, so show the email instead.
+    final contact = profile.phone.isNotEmpty
+        ? Formatters.phone(profile.phone)
+        : profile.email ?? '';
 
     return SurfaceCard(
       onTap: () => showEditProfileSheet(context, profile),
@@ -196,7 +204,7 @@ class _ProfileCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 2),
                 Text(
-                  Formatters.phone(profile.phone),
+                  contact,
                   style: TextStyle(fontSize: 13, color: palette.muted),
                 ),
                 const SizedBox(height: 3),
