@@ -22,19 +22,21 @@ samples, guidance on mobile development, and a full API reference.
 
 ## Search Module
 
-The Search module covers Home search, Results, Filters, Trip details and
-the Waitlist. It uses a SearchBloc for search and filter state and a
-WaitlistCubit for waitlist state. Trip and operator data is stored in
-Cloud Firestore, with composite indexes defined in `firestore.indexes.json`.
+The Search module lets a traveller find and compare bus trips.
 
-### Setup
+### Features
 
-1. Install Flutter and clone this repository.
-2. Run `flutter pub get`.
-3. Run `flutter run` on an emulator or a physical Android device.
+- Home search for trips
+- Results list
+- Filters to narrow results
+- Trip details screen
+- Waitlist for trips that are full
 
-### Testing
+### How it works
 
-Run `flutter test` from the project root.
+- **SearchBloc** manages search and filter state.
+- **WaitlistCubit** manages waitlist state.
+- Trip and operator data is stored in Cloud Firestore.
+- Composite indexes are defined in `firestore.indexes.json`.
 
-[Test results and screenshots to be added once Flutter is set up.]
+README and documentation: Cherish Yusuf
