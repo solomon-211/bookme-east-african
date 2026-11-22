@@ -1,6 +1,7 @@
 import 'package:bookme_summative_project/core/theme/bookme_themes.dart';
 import 'package:bookme_summative_project/features/auth/bloc/auth_bloc.dart';
 import 'package:bookme_summative_project/features/auth/data/auth_repository.dart';
+import 'package:bookme_summative_project/features/auth/presentation/login_screen.dart';
 import 'package:bookme_summative_project/features/auth/presentation/otp_screen.dart';
 import 'package:bookme_summative_project/features/auth/presentation/phone_sign_in_screen.dart';
 import 'package:bookme_summative_project/features/auth/presentation/welcome_screen.dart';
@@ -50,6 +51,8 @@ void main() {
 
       for (final screen in const [
         WelcomeScreen(),
+        LoginScreen(),
+        LoginScreen(startInRegisterMode: true),
         PhoneSignInScreen(),
         OtpScreen(),
       ]) {
