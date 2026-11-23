@@ -88,7 +88,7 @@ class _DateStrip extends StatelessWidget {
           final selected = day == state.selectedDay;
           final fare = loading ? null : state.lowestFareOn(day);
           final weekday = Formatters.shortDate(day).split(' ').first;
-          final fg = selected ? Colors.white : palette.text;
+          final fg = selected ? palette.onAccent : palette.text;
           return Semantics(
             selected: selected,
             button: true,
@@ -97,11 +97,11 @@ class _DateStrip extends StatelessWidget {
                 '${fare == null ? 'no seats' : 'from ${Formatters.money(fare, state.currency)}'}',
             excludeSemantics: true,
             child: Material(
-              color: selected ? AppColors.ink : palette.card,
+              color: selected ? palette.accent : palette.card,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(14),
                 side: BorderSide(
-                  color: selected ? AppColors.ink : palette.border,
+                  color: selected ? palette.accent : palette.border,
                 ),
               ),
               child: InkWell(

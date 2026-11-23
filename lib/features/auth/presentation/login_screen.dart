@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/router/app_router.dart';
-import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_palette.dart';
 import '../../../core/utils/validators.dart';
 import '../../../core/widgets/app_text_field.dart';
 import '../../../core/widgets/primary_button.dart';
@@ -110,7 +110,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ? 'Log in to manage your trips and tickets.'
                 : 'Book seats and receive QR tickets on your phone.',
             textAlign: TextAlign.center,
-            style: const TextStyle(color: AppColors.muted),
+            style: TextStyle(color: context.palette.muted),
           ),
           const SizedBox(height: 24),
           if (!_isLogin) ...[

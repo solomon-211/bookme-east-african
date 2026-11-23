@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:bookme_summative_project/core/theme/app_colors.dart';
+import 'package:bookme_summative_project/core/theme/app_palette.dart';
 import 'package:bookme_summative_project/core/utils/formatters.dart';
 import 'package:bookme_summative_project/features/booking/domain/entities/booking.dart';
 import 'package:bookme_summative_project/features/booking/domain/entities/payment.dart';
@@ -53,7 +54,7 @@ class PaymentReceivedPage extends StatelessWidget {
           textAlign: TextAlign.center,
           style: textTheme.headlineSmall?.copyWith(
             fontWeight: FontWeight.w800,
-            color: AppColors.ink,
+            color: context.palette.text,
           ),
         ),
         const SizedBox(height: 8),
@@ -61,7 +62,7 @@ class PaymentReceivedPage extends StatelessWidget {
           'Your guaranteed seat ${booking.seatNumber} is confirmed. '
           'We\'ve sent a receipt by SMS.',
           textAlign: TextAlign.center,
-          style: textTheme.bodyMedium?.copyWith(color: AppColors.muted),
+          style: textTheme.bodyMedium?.copyWith(color: context.palette.muted),
         ),
         const SizedBox(height: 20),
         TripSummaryCard(
@@ -115,14 +116,17 @@ class _ReceiptRow extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          child: Text(label, style: style?.copyWith(color: AppColors.muted)),
+          child: Text(
+            label,
+            style: style?.copyWith(color: context.palette.muted),
+          ),
         ),
         Flexible(
           child: Text(
             value,
             textAlign: TextAlign.end,
             style: style?.copyWith(
-              color: AppColors.ink,
+              color: context.palette.text,
               fontWeight: bold ? FontWeight.w800 : FontWeight.w600,
             ),
           ),

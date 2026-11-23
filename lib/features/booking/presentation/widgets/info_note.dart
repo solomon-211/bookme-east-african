@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:bookme_summative_project/core/theme/app_colors.dart';
+import 'package:bookme_summative_project/core/theme/app_palette.dart';
 
 enum InfoNoteTone { protected, caution, highlight }
 
@@ -29,15 +30,15 @@ class InfoNote extends StatelessWidget {
       IconData defaultIcon,
     ) = switch (tone) {
       InfoNoteTone.protected => (
-        AppColors.successSoft,
+        context.palette.successSoft,
         AppColors.success,
-        AppColors.ink,
+        context.palette.text,
         Icons.verified_user_outlined,
       ),
       InfoNoteTone.caution => (
-        AppColors.warningSoft,
-        AppColors.warningText,
-        AppColors.warningText,
+        context.palette.warningSoft,
+        context.palette.warningText,
+        context.palette.warningText,
         Icons.shield_outlined,
       ),
       InfoNoteTone.highlight => (

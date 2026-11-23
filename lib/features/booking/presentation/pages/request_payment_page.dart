@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:bookme_summative_project/core/theme/app_colors.dart';
+import 'package:bookme_summative_project/core/theme/app_palette.dart';
 import 'package:bookme_summative_project/core/utils/formatters.dart';
 import 'package:bookme_summative_project/features/booking/domain/entities/booking.dart';
 import 'package:bookme_summative_project/features/booking/domain/utils/booking_reference.dart';
@@ -183,9 +184,9 @@ class _RequestPaymentPageState extends State<RequestPaymentPage> {
             Container(
               padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(
-                color: AppColors.card,
+                color: context.palette.card,
                 borderRadius: BorderRadius.circular(14),
-                border: Border.all(color: AppColors.border),
+                border: Border.all(color: context.palette.border),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -194,7 +195,7 @@ class _RequestPaymentPageState extends State<RequestPaymentPage> {
                     'Share a secure payment request',
                     style: textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.w700,
-                      color: AppColors.ink,
+                      color: context.palette.text,
                     ),
                   ),
                   const SizedBox(height: 4),
@@ -219,7 +220,9 @@ class _RequestPaymentPageState extends State<RequestPaymentPage> {
               'The payer can use mobile money or card. Funds stay in escrow '
               'until your successful, verified boarding. You\'ll both '
               'receive confirmation.',
-              style: textTheme.bodySmall?.copyWith(color: AppColors.muted),
+              style: textTheme.bodySmall?.copyWith(
+                color: context.palette.muted,
+              ),
             ),
           ],
         ),

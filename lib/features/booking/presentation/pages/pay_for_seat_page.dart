@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:bookme_summative_project/core/theme/app_colors.dart';
+import 'package:bookme_summative_project/core/theme/app_palette.dart';
 import 'package:bookme_summative_project/core/utils/formatters.dart';
 import 'package:bookme_summative_project/features/booking/domain/entities/payment_method.dart';
 import 'package:bookme_summative_project/features/booking/domain/validators/passenger_validators.dart';
@@ -117,7 +117,7 @@ class _PayForSeatPageState extends State<PayForSeatPage> {
                   textAlign: TextAlign.center,
                   style: Theme.of(
                     context,
-                  ).textTheme.bodySmall?.copyWith(color: AppColors.muted),
+                  ).textTheme.bodySmall?.copyWith(color: context.palette.muted),
                 ),
               ],
             ),

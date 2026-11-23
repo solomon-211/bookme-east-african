@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:bookme_summative_project/core/theme/app_colors.dart';
+import 'package:bookme_summative_project/core/theme/app_palette.dart';
 import 'package:bookme_summative_project/core/utils/formatters.dart';
 import 'package:bookme_summative_project/features/booking/presentation/widgets/info_note.dart';
 import 'package:bookme_summative_project/features/booking/presentation/widgets/primary_button.dart';
@@ -66,7 +66,7 @@ class MyTripsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.surface,
+      backgroundColor: context.palette.background,
       body: SafeArea(
         bottom: false,
         child: BlocBuilder<MyTripsCubit, MyTripsState>(
@@ -107,7 +107,7 @@ class _Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
+    return Padding(
       padding: EdgeInsets.fromLTRB(20, 12, 20, 12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -118,13 +118,17 @@ class _Header extends StatelessWidget {
               fontSize: 28,
               height: 1.15,
               fontWeight: FontWeight.w700,
-              color: AppColors.ink,
+              color: context.palette.text,
             ),
           ),
           SizedBox(height: 2),
           Text(
             'Your journey, all in one place',
-            style: TextStyle(fontSize: 11, height: 1.4, color: AppColors.muted),
+            style: TextStyle(
+              fontSize: 11,
+              height: 1.4,
+              color: context.palette.muted,
+            ),
           ),
         ],
       ),
@@ -217,13 +221,13 @@ class _LoadedBody extends StatelessWidget {
   List<Widget> _recentPast(BuildContext context) {
     if (state.past.isEmpty) return const [];
     return [
-      const Text(
+      Text(
         'Recent past trips',
         style: TextStyle(
           fontSize: 18,
           height: 1.4,
           fontWeight: FontWeight.w700,
-          color: AppColors.ink,
+          color: context.palette.text,
         ),
       ),
       const SizedBox(height: 16),
@@ -313,9 +317,11 @@ class _TabPill extends StatelessWidget {
       selected: selected,
       button: true,
       child: Material(
-        color: selected ? AppColors.ink : AppColors.card,
+        color: selected ? context.palette.accent : context.palette.card,
         shape: StadiumBorder(
-          side: BorderSide(color: selected ? AppColors.ink : AppColors.border),
+          side: BorderSide(
+            color: selected ? context.palette.accent : context.palette.border,
+          ),
         ),
         child: InkWell(
           onTap: onTap,
@@ -327,7 +333,9 @@ class _TabPill extends StatelessWidget {
               style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w500,
-                color: selected ? Colors.white : AppColors.ink,
+                color: selected
+                    ? context.palette.onAccent
+                    : context.palette.text,
               ),
             ),
           ),
@@ -355,31 +363,31 @@ class _EmptyTrips extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppColors.card,
+        color: context.palette.card,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: context.palette.border),
       ),
       child: Column(
         children: [
-          const Icon(
+          Icon(
             Icons.confirmation_number_outlined,
             size: 32,
-            color: AppColors.muted,
+            color: context.palette.muted,
           ),
           const SizedBox(height: 12),
           Text(
             title,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 17,
               fontWeight: FontWeight.w700,
-              color: AppColors.ink,
+              color: context.palette.text,
             ),
           ),
           const SizedBox(height: 4),
           Text(
             message,
             textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 13, color: AppColors.muted),
+            style: TextStyle(fontSize: 13, color: context.palette.muted),
           ),
           const SizedBox(height: 16),
           PrimaryButton(label: 'Find a bus', onPressed: onFindBus),
@@ -402,12 +410,12 @@ class _ErrorBody extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(Icons.cloud_off_rounded, size: 40, color: AppColors.muted),
+          Icon(Icons.cloud_off_rounded, size: 40, color: context.palette.muted),
           const SizedBox(height: 12),
           Text(
             message ?? 'We couldn\'t load your trips. Please try again.',
             textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 14, color: AppColors.ink),
+            style: TextStyle(fontSize: 14, color: context.palette.text),
           ),
           const SizedBox(height: 16),
           PrimaryButton(

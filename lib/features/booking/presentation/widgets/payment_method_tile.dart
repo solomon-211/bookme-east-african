@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:bookme_summative_project/core/theme/app_colors.dart';
+import 'package:bookme_summative_project/core/theme/app_palette.dart';
 import 'package:bookme_summative_project/features/booking/domain/entities/payment_method.dart';
 
 /// One selectable row in the "Pay with" list.
@@ -32,11 +33,11 @@ class PaymentMethodTile extends StatelessWidget {
         label: '${method.label}, ${method.subtitle}',
         excludeSemantics: true,
         child: Material(
-          color: AppColors.card,
+          color: context.palette.card,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(14),
             side: BorderSide(
-              color: selected ? AppColors.ink : AppColors.border,
+              color: selected ? context.palette.text : context.palette.border,
               width: selected ? 1.6 : 1,
             ),
           ),
@@ -63,13 +64,13 @@ class PaymentMethodTile extends StatelessWidget {
                             method.label,
                             style: textTheme.bodyMedium?.copyWith(
                               fontWeight: FontWeight.w700,
-                              color: AppColors.ink,
+                              color: context.palette.text,
                             ),
                           ),
                           Text(
                             method.subtitle,
                             style: textTheme.bodySmall?.copyWith(
-                              color: AppColors.muted,
+                              color: context.palette.muted,
                             ),
                           ),
                         ],
@@ -82,7 +83,9 @@ class PaymentMethodTile extends StatelessWidget {
                             ? Icons.radio_button_checked
                             : Icons.radio_button_unchecked,
                         key: ValueKey(selected),
-                        color: selected ? AppColors.ink : AppColors.border,
+                        color: selected
+                            ? context.palette.text
+                            : context.palette.border,
                       ),
                     ),
                   ],

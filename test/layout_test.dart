@@ -32,19 +32,27 @@ void main() {
   }
 
   for (final MapEntry(key: name, value: size) in _screens.entries) {
-    testWidgets('signed-in tabs fit on a $name', (tester) async {
-      await useSize(tester, size);
-      SharedPreferences.setMockInitialValues({});
-      final prefs = await SharedPreferences.getInstance();
+    for (final theme in ['light', 'dark']) {
+      testWidgets('signed-in tabs fit on a $name in $theme mode', (
+        tester,
+      ) async {
+        await useSize(tester, size);
+        SharedPreferences.setMockInitialValues({'settings.themeMode': theme});
+        final prefs = await SharedPreferences.getInstance();
 
-      await tester.pumpWidget(buildTestApp(prefs));
-      await tester.pumpAndSettle();
-
-      for (final tab in ['My Trips', 'Alerts', 'Account', 'Search']) {
-        await tester.tap(find.text(tab).last);
+        await tester.pumpWidget(buildTestApp(prefs));
         await tester.pumpAndSettle();
-      }
-    });
+        expect(
+          Theme.of(tester.element(find.byType(Scaffold).first)).brightness,
+          theme == 'dark' ? Brightness.dark : Brightness.light,
+        );
+
+        for (final tab in ['My Trips', 'Alerts', 'Account', 'Search']) {
+          await tester.tap(find.text(tab).last);
+          await tester.pumpAndSettle();
+        }
+      });
+    }
 
     testWidgets('sign-in screens fit on a $name', (tester) async {
       await useSize(tester, size);

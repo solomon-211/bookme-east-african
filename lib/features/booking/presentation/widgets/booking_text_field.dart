@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:bookme_summative_project/core/theme/app_colors.dart';
+import 'package:bookme_summative_project/core/theme/app_palette.dart';
 
-/// Labelled text field in the BookMe style: small grey label above a white
-/// rounded box, with the validation message shown underneath.
+/// Labelled text field in the BookMe style: small grey label above a
+/// rounded card-coloured box, with the validation message underneath.
 class BookingTextField extends StatelessWidget {
   const BookingTextField({
     required this.label,
@@ -48,7 +48,7 @@ class BookingTextField extends StatelessWidget {
             label,
             style: Theme.of(
               context,
-            ).textTheme.bodySmall?.copyWith(color: AppColors.muted),
+            ).textTheme.bodySmall?.copyWith(color: context.palette.muted),
           ),
           const SizedBox(height: 6),
           TextFormField(
@@ -61,7 +61,10 @@ class BookingTextField extends StatelessWidget {
             autofillHints: autofillHints,
             inputFormatters: inputFormatters,
             autovalidateMode: AutovalidateMode.onUserInteraction,
+            style: bookingInputTextStyle(context),
+            cursorColor: context.palette.text,
             decoration: bookingInputDecoration(
+              context,
               hint: hint,
               helper: helper,
               prefixIcon: prefixIcon,
@@ -73,31 +76,55 @@ class BookingTextField extends StatelessWidget {
   }
 }
 
-InputDecoration bookingInputDecoration({
+/// What the traveller types: full-strength text colour, slightly bold, so
+/// it never looks like the grey hint.
+TextStyle bookingInputTextStyle(BuildContext context) => TextStyle(
+  color: context.palette.text,
+  fontSize: 16,
+  fontWeight: FontWeight.w500,
+);
+
+InputDecoration bookingInputDecoration(
+  BuildContext context, {
   String? hint,
   String? helper,
   IconData? prefixIcon,
 }) {
+  final palette = context.palette;
+  // Theme error red: dark red in light mode, a lighter red in dark mode.
+  final error = Theme.of(context).colorScheme.error;
   OutlineInputBorder border(Color color) => OutlineInputBorder(
     borderRadius: BorderRadius.circular(12),
     borderSide: BorderSide(color: color),
   );
   return InputDecoration(
     hintText: hint,
+    // Lighter than typed text so an example is never mistaken for an answer.
+    hintStyle: TextStyle(
+      color: palette.muted.withValues(alpha: 0.6),
+      fontSize: 16,
+      fontWeight: FontWeight.w400,
+    ),
     helperText: helper,
+    helperStyle: TextStyle(color: palette.muted, fontSize: 12),
+    errorStyle: TextStyle(
+      color: error,
+      fontSize: 12.5,
+      fontWeight: FontWeight.w500,
+    ),
     helperMaxLines: 2,
     errorMaxLines: 3,
     filled: true,
-    fillColor: AppColors.card,
+    fillColor: palette.card,
     isDense: true,
     contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
     prefixIcon: prefixIcon == null
         ? null
-        : Icon(prefixIcon, size: 20, color: AppColors.muted),
-    border: border(AppColors.border),
-    enabledBorder: border(AppColors.border),
-    focusedBorder: border(AppColors.ink),
-    errorBorder: border(AppColors.error),
-    focusedErrorBorder: border(AppColors.error),
+        : Icon(prefixIcon, size: 20, color: palette.muted),
+    border: border(palette.border),
+    enabledBorder: border(palette.border),
+    focusedBorder: border(palette.text),
+    errorBorder: border(error),
+    focusedErrorBorder: border(error),
   );
 }

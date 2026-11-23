@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:bookme_summative_project/core/theme/app_colors.dart';
+import 'package:bookme_summative_project/core/theme/app_palette.dart';
 import 'package:bookme_summative_project/core/utils/formatters.dart';
 import 'package:bookme_summative_project/features/booking/domain/entities/trip_summary.dart';
 import 'package:bookme_summative_project/features/booking/presentation/widgets/primary_button.dart';
@@ -69,7 +70,7 @@ class ChangeDateView extends StatelessWidget {
         final ticket = cubit.ticket;
         final selected = state.selected;
         return Scaffold(
-          backgroundColor: AppColors.surface,
+          backgroundColor: context.palette.background,
           body: SafeArea(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -168,13 +169,13 @@ class _Body extends StatelessWidget {
           separatorBuilder: (_, _) => const SizedBox(height: 10),
           itemBuilder: (context, i) {
             if (i == 0) {
-              return const Text(
+              return Text(
                 'Prices include the service fee. Paying a difference isn\'t '
                 'available yet, so dearer departures can\'t be picked.',
                 style: TextStyle(
                   fontSize: 11,
                   height: 1.4,
-                  color: AppColors.muted,
+                  color: context.palette.muted,
                 ),
               );
             }
@@ -212,7 +213,7 @@ class _Message extends StatelessWidget {
             Text(
               text,
               textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 14, color: AppColors.muted),
+              style: TextStyle(fontSize: 14, color: context.palette.muted),
             ),
             const SizedBox(height: 12),
             TextButton(onPressed: onRetry, child: const Text('Try again')),
@@ -239,16 +240,16 @@ class _DepartureTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final (label, color) = _difference();
+    final (label, color) = _difference(context);
     final enabled = onTap != null || selected;
     return Opacity(
       opacity: enabled ? 1 : 0.55,
       child: Material(
-        color: selected ? AppColors.limeSoft : AppColors.card,
+        color: selected ? context.palette.limeSoft : context.palette.card,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
           side: BorderSide(
-            color: selected ? AppColors.ink : AppColors.border,
+            color: selected ? context.palette.text : context.palette.border,
             width: selected ? 1.5 : 1,
           ),
         ),
@@ -265,11 +266,11 @@ class _DepartureTile extends StatelessWidget {
                     children: [
                       Text(
                         _when(trip),
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 14,
                           height: 1.4,
                           fontWeight: FontWeight.w700,
-                          color: AppColors.ink,
+                          color: context.palette.text,
                         ),
                       ),
                       const SizedBox(height: 2),
@@ -277,10 +278,10 @@ class _DepartureTile extends StatelessWidget {
                         '${trip.operatorName} · arrives '
                         '${Formatters.shortDate(trip.arrival)}, '
                         '${Formatters.time(trip.arrival)}',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 11,
                           height: 1.4,
-                          color: AppColors.muted,
+                          color: context.palette.muted,
                         ),
                       ),
                     ],
@@ -292,10 +293,10 @@ class _DepartureTile extends StatelessWidget {
                   children: [
                     Text(
                       Formatters.money(trip.total, trip.currency),
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w700,
-                        color: AppColors.ink,
+                        color: context.palette.text,
                       ),
                     ),
                     const SizedBox(height: 2),
@@ -317,13 +318,13 @@ class _DepartureTile extends StatelessWidget {
     );
   }
 
-  (String, Color) _difference() {
+  (String, Color) _difference(BuildContext context) {
     final q = quote;
-    if (q == null) return ('No longer available', AppColors.muted);
+    if (q == null) return ('No longer available', context.palette.muted);
     if (q.needsTopUp) {
       return (
         '+${Formatters.money(q.difference, trip.currency)} · not yet',
-        AppColors.muted,
+        context.palette.muted,
       );
     }
     if (q.refund > 0) {
@@ -332,6 +333,6 @@ class _DepartureTile extends StatelessWidget {
         AppColors.success,
       );
     }
-    return ('Same price', AppColors.muted);
+    return ('Same price', context.palette.muted);
   }
 }

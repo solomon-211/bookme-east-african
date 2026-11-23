@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:bookme_summative_project/core/theme/app_colors.dart';
+import 'package:bookme_summative_project/core/theme/app_palette.dart';
 import 'package:bookme_summative_project/features/tickets/domain/entities/ticket.dart';
 import 'package:bookme_summative_project/features/tickets/domain/utils/border_crossing.dart';
 
@@ -34,10 +34,10 @@ class PastTripTile extends StatelessWidget {
     final outcome = ticket.isCancelled ? 'Cancelled' : 'Completed';
 
     return Material(
-      color: AppColors.card,
+      color: context.palette.card,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
-        side: const BorderSide(color: AppColors.border),
+        side: BorderSide(color: context.palette.border),
       ),
       clipBehavior: Clip.antiAlias,
       child: InkWell(
@@ -50,7 +50,7 @@ class PastTripTile extends StatelessWidget {
                 width: 36,
                 height: 36,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFEBEFEE),
+                  color: context.palette.iconTile,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Icon(
@@ -58,7 +58,7 @@ class PastTripTile extends StatelessWidget {
                       ? Icons.cancel_outlined
                       : Icons.check_circle_outline,
                   size: 18,
-                  color: AppColors.ink,
+                  color: context.palette.text,
                 ),
               ),
               const SizedBox(width: 12),
@@ -71,26 +71,26 @@ class PastTripTile extends StatelessWidget {
                       '${cityName(trip.toCode, station: trip.toStation)}',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 13,
                         height: 1.4,
                         fontWeight: FontWeight.w600,
-                        color: AppColors.ink,
+                        color: context.palette.text,
                       ),
                     ),
                     const SizedBox(height: 3),
                     Text(
                       '${trip.operatorName} · $date · $outcome',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 11,
                         height: 1.4,
-                        color: AppColors.muted,
+                        color: context.palette.muted,
                       ),
                     ),
                   ],
                 ),
               ),
-              const Icon(Icons.chevron_right, size: 16, color: AppColors.muted),
+              Icon(Icons.chevron_right, size: 16, color: context.palette.muted),
             ],
           ),
         ),
