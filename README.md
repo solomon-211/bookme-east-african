@@ -1,19 +1,34 @@
 # bookme-east-african
 Front-end &amp; Backend Implementation4
 
-# bookme_summative_project
+**Your seat, confirmed before you leave home.**
 
-A new Flutter project.
+BookMe East Africa is a Flutter mobile app for booking cross-border bus
+trips between Rwanda, Uganda, Kenya, Tanzania, South Sudan and Burundi.
+Travellers search verified operators, hold a seat for ten minutes, pay with
+mobile money, and board with a QR ticket that also works offline. Their
+money stays in escrow until they board, and they get live alerts about
+delays, cancellations and seats opening up.
 
-## Getting Started
+The app is built with **Flutter**, **BLoC** for state management and
+**Firebase** (Authentication and Cloud Firestore). It targets **Android and
+iOS only**.
 
-This project is a starting point for a Flutter application.
+---
 
-A few resources to get you started if this is your first Flutter project:
+## Contents
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+- [Features](#features)
+- [Tech stack](#tech-stack)
+- [Architecture](#architecture)
+- [Project structure](#project-structure)
+- [Database design](#database-design)
+- [Security rules](#security-rules)
+- [Getting started](#getting-started)
+- [Loading the bus data](#loading-the-bus-data)
+- [Testing](#testing)
+- [Known limitations](#known-limitations)
+- [Team](#team)
 
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
