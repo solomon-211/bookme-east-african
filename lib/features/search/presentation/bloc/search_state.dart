@@ -90,7 +90,9 @@ class SearchState extends Equatable {
     final byId = <String, String>{
       for (final t in windowTrips) t.operatorId: t.operatorName,
     };
-    final options = [for (final e in byId.entries) OperatorOption(e.key, e.value)];
+    final options = [
+      for (final e in byId.entries) OperatorOption(e.key, e.value),
+    ];
     options.sort((a, b) => a.name.compareTo(b.name));
     return options;
   }

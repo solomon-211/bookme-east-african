@@ -9,8 +9,10 @@ import 'package:bookme_summative_project/features/tickets/data/models/trip_docum
 
 void main() {
   final start = DateTime(2026, 10, 1);
-  final trip = InMemorySearchRepository.seedTrips(start, days: 1)
-      .firstWhere((t) => t.routeId == 'trinity_kgl_kla' && t.departure.hour == 21);
+  final trip = InMemorySearchRepository.seedTrips(
+    start,
+    days: 1,
+  ).firstWhere((t) => t.routeId == 'trinity_kgl_kla' && t.departure.hour == 21);
 
   test('Firestore map round-trips', () {
     final map = BusTripModel.toFirestore(trip);
@@ -19,7 +21,10 @@ void main() {
   });
 
   test('Tickets reads the same document as the booking flow expects', () {
-    final summary = TripDocumentMapper.fromMap(trip.id, BusTripModel.toFirestore(trip));
+    final summary = TripDocumentMapper.fromMap(
+      trip.id,
+      BusTripModel.toFirestore(trip),
+    );
     expect(summary, trip.toSummary());
     expect(summary!.fromCode, 'KGL');
     expect(summary.fromStation, 'Nyabugogo');
@@ -32,7 +37,8 @@ void main() {
   });
 
   test('unknown amenity codes are ignored', () {
-    final map = BusTripModel.toFirestore(trip)..['amenities'] = ['wifi', 'jacuzzi'];
+    final map = BusTripModel.toFirestore(trip)
+      ..['amenities'] = ['wifi', 'jacuzzi'];
     expect(BusTripModel.fromMap(trip.id, map)!.amenities, {Amenity.wifi});
   });
 

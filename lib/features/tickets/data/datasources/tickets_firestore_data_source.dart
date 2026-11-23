@@ -173,10 +173,9 @@ class TicketsFirestoreDataSource implements TicketsDataSource {
     final bookingRef = _bookings.doc(booking.id);
     final oldSeatRef = _seatsOf(booking.tripId).doc(booking.seatNumber);
 
-    final free = await _seatsOf(newTrip.tripId)
-        .where('status', isEqualTo: 'available')
-        .limit(_seatCandidates)
-        .get();
+    final free = await _seatsOf(
+      newTrip.tripId,
+    ).where('status', isEqualTo: 'available').limit(_seatCandidates).get();
     if (free.docs.isEmpty) {
       throw const BookingFailure(
         'This departure is fully booked. Please pick another one.',

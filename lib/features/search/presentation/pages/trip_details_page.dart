@@ -98,11 +98,16 @@ class _TripDetailsPageState extends State<TripDetailsPage> {
                           note: 'Boarding · Arrive 30 minutes early',
                         ),
                         for (final s in trip.stops)
-                          _Stop(name: s.name, time: '~${Formatters.time(s.time)}', note: s.note),
+                          _Stop(
+                            name: s.name,
+                            time: '~${Formatters.time(s.time)}',
+                            note: s.note,
+                          ),
                         _Stop(
                           name: '${trip.toStation}, ${trip.destination}',
                           time: Formatters.time(trip.arrival),
-                          note: 'Drop-off · ${Formatters.shortDate(trip.arrival)}',
+                          note:
+                              'Drop-off · ${Formatters.shortDate(trip.arrival)}',
                           last: true,
                         ),
                       ],
@@ -127,14 +132,25 @@ class _TripDetailsPageState extends State<TripDetailsPage> {
                       children: [
                         _PriceRow('Base fare', trip.price, trip.currency),
                         _PriceRow('Taxes', trip.taxes, trip.currency),
-                        _PriceRow('BookMe service fee', trip.serviceFee, trip.currency),
+                        _PriceRow(
+                          'BookMe service fee',
+                          trip.serviceFee,
+                          trip.currency,
+                        ),
                         Divider(height: 20, color: palette.border),
-                        _PriceRow('Total per seat', trip.total, trip.currency, bold: true),
+                        _PriceRow(
+                          'Total per seat',
+                          trip.total,
+                          trip.currency,
+                          bold: true,
+                        ),
                         const SizedBox(height: 4),
                         Align(
                           alignment: Alignment.centerLeft,
-                          child: Text('No hidden fees at the counter',
-                              style: TextStyle(fontSize: 12, color: palette.link)),
+                          child: Text(
+                            'No hidden fees at the counter',
+                            style: TextStyle(fontSize: 12, color: palette.link),
+                          ),
                         ),
                       ],
                     ),
@@ -175,7 +191,11 @@ class _TripDetailsPageState extends State<TripDetailsPage> {
                       ),
                       Text(
                         Formatters.money(trip.total, trip.currency),
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800, color: palette.text),
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w800,
+                          color: palette.text,
+                        ),
                       ),
                     ],
                   ),
@@ -238,10 +258,15 @@ class _Stop extends StatelessWidget {
                 Container(
                   width: 8,
                   height: 8,
-                  decoration: BoxDecoration(color: palette.text, shape: BoxShape.circle),
+                  decoration: BoxDecoration(
+                    color: palette.text,
+                    shape: BoxShape.circle,
+                  ),
                 ),
                 if (!last)
-                  Expanded(child: VerticalDivider(width: 2, color: palette.border)),
+                  Expanded(
+                    child: VerticalDivider(width: 2, color: palette.border),
+                  ),
               ],
             ),
           ),
@@ -252,13 +277,25 @@ class _Stop extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(name, style: TextStyle(fontWeight: FontWeight.w600, color: palette.text)),
-                  Text(note, style: TextStyle(fontSize: 12, color: palette.muted)),
+                  Text(
+                    name,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      color: palette.text,
+                    ),
+                  ),
+                  Text(
+                    note,
+                    style: TextStyle(fontSize: 12, color: palette.muted),
+                  ),
                 ],
               ),
             ),
           ),
-          Text(time, style: TextStyle(fontWeight: FontWeight.w600, color: palette.text)),
+          Text(
+            time,
+            style: TextStyle(fontWeight: FontWeight.w600, color: palette.text),
+          ),
         ],
       ),
     );
@@ -282,11 +319,18 @@ class _PriceRow extends StatelessWidget {
       child: Row(
         children: [
           Expanded(
-            child: Text(label,
-                style: TextStyle(color: bold ? palette.text : palette.muted, fontWeight: weight)),
+            child: Text(
+              label,
+              style: TextStyle(
+                color: bold ? palette.text : palette.muted,
+                fontWeight: weight,
+              ),
+            ),
           ),
-          Text(Formatters.money(amount, currency),
-              style: TextStyle(color: palette.text, fontWeight: weight)),
+          Text(
+            Formatters.money(amount, currency),
+            style: TextStyle(color: palette.text, fontWeight: weight),
+          ),
         ],
       ),
     );

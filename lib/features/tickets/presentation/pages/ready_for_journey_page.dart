@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:bookme_summative_project/core/theme/app_colors.dart';
+import 'package:bookme_summative_project/core/theme/app_palette.dart';
 import 'package:bookme_summative_project/core/utils/formatters.dart';
 import 'package:bookme_summative_project/features/booking/presentation/widgets/primary_button.dart';
 import 'package:bookme_summative_project/features/tickets/domain/entities/ticket.dart';
@@ -71,12 +72,12 @@ class ReadyForJourneyView extends StatelessWidget {
     return BlocConsumer<ReadyForJourneyCubit, ReadyForJourneyState>(
       listenWhen: (before, after) =>
           after.message != null && before.message != after.message,
-      listener: (context, state) =>
-          ScaffoldMessenger.of(context)
-              .showSnackBar(SnackBar(content: Text(state.message!))),
+      listener: (context, state) => ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(state.message!))),
       builder: (context, state) {
         return Scaffold(
-          backgroundColor: AppColors.surface,
+          backgroundColor: context.palette.background,
           body: SafeArea(
             bottom: false,
             child: Column(
@@ -150,10 +151,10 @@ class _TripCard extends StatelessWidget {
             '${Formatters.shortDate(trip.departure)} → '
             '${Formatters.shortDate(trip.arrival)} · '
             '${trip.operatorName} · Seat ${ticket.booking.seatNumber}',
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 11,
               height: 1.4,
-              color: AppColors.muted,
+              color: context.palette.muted,
             ),
           ),
           const SizedBox(height: 12),
@@ -164,7 +165,9 @@ class _TripCard extends StatelessWidget {
             style: TextStyle(
               fontSize: 11,
               height: 1.4,
-              color: savedOffline ? AppColors.success : AppColors.warningText,
+              color: savedOffline
+                  ? AppColors.success
+                  : context.palette.warningText,
             ),
           ),
         ],
@@ -225,21 +228,21 @@ class _StationCard extends StatelessWidget {
         children: [
           Text(
             'Be at ${trip.fromStation} by ${Formatters.time(boarding)}',
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 16,
               height: 1.4,
               fontWeight: FontWeight.w700,
-              color: AppColors.ink,
+              color: context.palette.text,
             ),
           ),
           const SizedBox(height: 4),
           Text(
             'Boarding opens ${kBoardingWindow.inMinutes} minutes before '
             'departure. Show your QR to the ${trip.operatorName} conductor.',
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 12,
               height: 1.4,
-              color: AppColors.muted,
+              color: context.palette.muted,
             ),
           ),
           const SizedBox(height: 4),
@@ -295,13 +298,13 @@ class _DocumentChecklist extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          Text(
             'Cross-border checklist',
             style: TextStyle(
               fontSize: 18,
               height: 1.4,
               fontWeight: FontWeight.w700,
-              color: AppColors.ink,
+              color: context.palette.text,
             ),
           ),
           for (final item in items) ...[
@@ -313,10 +316,14 @@ class _DocumentChecklist extends StatelessWidget {
             ),
           ],
           const SizedBox(height: 8),
-          const Text(
+          Text(
             'Confirm with official immigration and health authorities. This '
             'checklist is guidance, not an entry guarantee.',
-            style: TextStyle(fontSize: 10, height: 1.4, color: AppColors.muted),
+            style: TextStyle(
+              fontSize: 10,
+              height: 1.4,
+              color: context.palette.muted,
+            ),
           ),
         ],
       ),
@@ -352,10 +359,10 @@ class _DocumentRow extends StatelessWidget {
                 width: 20,
                 height: 20,
                 decoration: BoxDecoration(
-                  color: checked ? AppColors.success : Colors.white,
+                  color: checked ? AppColors.success : context.palette.card,
                   borderRadius: BorderRadius.circular(5),
                   border: Border.all(
-                    color: checked ? AppColors.success : AppColors.border,
+                    color: checked ? AppColors.success : context.palette.border,
                   ),
                 ),
                 child: checked
@@ -369,20 +376,20 @@ class _DocumentRow extends StatelessWidget {
                   children: [
                     Text(
                       item.title,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 13,
                         height: 1.4,
                         fontWeight: FontWeight.w500,
-                        color: AppColors.ink,
+                        color: context.palette.text,
                       ),
                     ),
                     const SizedBox(height: 3),
                     Text(
                       item.detail,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 11,
                         height: 1.4,
-                        color: AppColors.muted,
+                        color: context.palette.muted,
                       ),
                     ),
                   ],
@@ -407,9 +414,9 @@ class _WhiteCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.card,
+        color: context.palette.card,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: context.palette.border),
       ),
       child: child,
     );
@@ -424,9 +431,9 @@ class _ManageBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-        color: AppColors.card,
-        border: Border(top: BorderSide(color: AppColors.border)),
+      decoration: BoxDecoration(
+        color: context.palette.card,
+        border: Border(top: BorderSide(color: context.palette.border)),
       ),
       padding: const EdgeInsets.fromLTRB(20, 12, 20, 12),
       child: SafeArea(

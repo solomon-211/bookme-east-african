@@ -1,32 +1,20 @@
 class Country {
-  const Country(this.name, this.dialCode);
+  const Country(this.name, this.dialCode, this.code);
   final String name;
   final String dialCode;
+
+  /// Two-letter code shown on the country chips, e.g. `RW`.
+  final String code;
   @override
   String toString() => '$name ($dialCode)';
 }
 
 /// Target markets from the BookMe East Africa proposal.
 const supportedCountries = <Country>[
-  Country('Rwanda', '+250'),
-  Country('Uganda', '+256'),
-  Country('Kenya', '+254'),
-  Country('Tanzania', '+255'),
-  Country('South Sudan', '+211'),
-  Country('Burundi', '+257'),
+  Country('Rwanda', '+250', 'RW'),
+  Country('Uganda', '+256', 'UG'),
+  Country('Kenya', '+254', 'KE'),
+  Country('Tanzania', '+255', 'TZ'),
+  Country('South Sudan', '+211', 'SS'),
+  Country('Burundi', '+257', 'BI'),
 ];
-
-/// Cities served by the demo data.
-const supportedCities = <String>[
-  'Kigali',
-  'Kampala',
-  'Nairobi',
-  'Bujumbura',
-];
-
-/// Payment methods (key stored in Firestore -> label shown in the UI).
-const paymentMethods = <String, String>{
-  'mtn_momo': 'MTN Mobile Money',
-  'airtel_money': 'Airtel Money',
-  'mpesa': 'M-Pesa',
-};

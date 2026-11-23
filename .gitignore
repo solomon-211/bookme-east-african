@@ -46,3 +46,7 @@ app.*.map.json
 
 # Widget Preview related
 .widget_preview/
+
+# Seed script dependencies and Firebase admin keys (never commit keys)
+node_modules/
+*firebase-adminsdk*.json

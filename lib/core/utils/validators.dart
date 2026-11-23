@@ -81,12 +81,4 @@ class Validators {
     if (!RegExp(r'^\d{6}$').hasMatch(v)) return otpInvalid;
     return null;
   }
-
-  /// Passenger contact number typed as a whole (e.g. +250 788 123 456).
-  static String? passengerPhone(String? value) {
-    final v = (value ?? '').replaceAll(RegExp(r'[\s\-()]'), '');
-    if (v.isEmpty) return phoneRequired;
-    if (!RegExp(r'^\+?\d{8,15}$').hasMatch(v)) return phoneInvalid;
-    return null;
-  }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:bookme_summative_project/core/theme/app_colors.dart';
+import 'package:bookme_summative_project/core/theme/app_palette.dart';
 
 /// Page frame shared by the booking screens.
 ///
@@ -29,14 +29,14 @@ class FlowScaffold extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     final canPop = Navigator.of(context).canPop();
     return Scaffold(
-      backgroundColor: AppColors.surface,
+      backgroundColor: context.palette.background,
       appBar: AppBar(
-        backgroundColor: AppColors.surface,
+        backgroundColor: context.palette.background,
         surfaceTintColor: Colors.transparent,
         elevation: 0,
         titleSpacing: canPop ? 0 : 16,
         automaticallyImplyLeading: false,
-        leading: canPop ? const BackButton(color: AppColors.ink) : null,
+        leading: canPop ? BackButton(color: context.palette.text) : null,
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
@@ -45,13 +45,15 @@ class FlowScaffold extends StatelessWidget {
               title,
               style: textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.w700,
-                color: AppColors.ink,
+                color: context.palette.text,
               ),
             ),
             if (subtitle != null)
               Text(
                 subtitle!,
-                style: textTheme.bodySmall?.copyWith(color: AppColors.muted),
+                style: textTheme.bodySmall?.copyWith(
+                  color: context.palette.muted,
+                ),
                 overflow: TextOverflow.ellipsis,
               ),
           ],
@@ -73,9 +75,9 @@ class FlowScaffold extends StatelessWidget {
       bottomNavigationBar: bottom == null
           ? null
           : DecoratedBox(
-              decoration: const BoxDecoration(
-                color: AppColors.surface,
-                border: Border(top: BorderSide(color: AppColors.border)),
+              decoration: BoxDecoration(
+                color: context.palette.background,
+                border: Border(top: BorderSide(color: context.palette.border)),
               ),
               child: SafeArea(
                 top: false,
@@ -109,8 +111,10 @@ class SectionLabel extends StatelessWidget {
       padding: const EdgeInsets.only(top: 20, bottom: 8),
       child: Text(
         text,
-        style: Theme.of(context).textTheme.titleSmall
-            ?.copyWith(fontWeight: FontWeight.w700, color: AppColors.ink),
+        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+          fontWeight: FontWeight.w700,
+          color: context.palette.text,
+        ),
       ),
     );
   }

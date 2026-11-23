@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:bookme_summative_project/core/theme/app_colors.dart';
+import 'package:bookme_summative_project/core/theme/app_palette.dart';
 import 'package:bookme_summative_project/core/utils/formatters.dart';
 import 'package:bookme_summative_project/features/booking/presentation/booking_flow.dart';
 import 'package:bookme_summative_project/features/booking/presentation/cubits/payment_cubit.dart';
@@ -119,15 +120,16 @@ class ApproveOnPhonePage extends StatelessWidget {
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                     fontWeight: FontWeight.w800,
-                    color: AppColors.ink,
+                    color: context.palette.text,
                   ),
                 ),
                 const SizedBox(height: 8),
                 Text(
                   body,
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodyMedium
-                      ?.copyWith(color: AppColors.muted),
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: context.palette.muted,
+                  ),
                 ),
                 const SizedBox(height: 20),
                 _StatusSteps(status: state.status, isRequest: state.isRequest),
@@ -194,7 +196,9 @@ class _PhonePulseState extends State<_PhonePulse>
           width: 96,
           height: 96,
           decoration: BoxDecoration(
-            color: widget.failed ? AppColors.warningSoft : AppColors.limeSoft,
+            color: widget.failed
+                ? context.palette.warningSoft
+                : context.palette.limeSoft,
             shape: BoxShape.circle,
           ),
           alignment: Alignment.center,
@@ -202,7 +206,9 @@ class _PhonePulseState extends State<_PhonePulse>
             width: 64,
             height: 64,
             decoration: BoxDecoration(
-              color: widget.failed ? AppColors.warningSoft : AppColors.lime,
+              color: widget.failed
+                  ? context.palette.warningSoft
+                  : AppColors.lime,
               shape: BoxShape.circle,
             ),
             child: Icon(
@@ -210,7 +216,9 @@ class _PhonePulseState extends State<_PhonePulse>
                   ? Icons.phonelink_erase_outlined
                   : Icons.phone_android_rounded,
               size: 32,
-              color: widget.failed ? AppColors.warningText : AppColors.ink,
+              color: widget.failed
+                  ? context.palette.warningText
+                  : context.palette.text,
             ),
           ),
         ),
@@ -235,9 +243,9 @@ class _StatusSteps extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 4),
       decoration: BoxDecoration(
-        color: AppColors.card,
+        color: context.palette.card,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: context.palette.border),
       ),
       child: Column(
         children: [
@@ -277,11 +285,11 @@ class _Step extends StatelessWidget {
         color: AppColors.success,
         size: 20,
       ),
-      _StepState.working => const SizedBox.square(
+      _StepState.working => SizedBox.square(
         dimension: 18,
         child: CircularProgressIndicator(
           strokeWidth: 2.2,
-          color: AppColors.warningText,
+          color: context.palette.warningText,
         ),
       ),
       _StepState.failed => const Icon(
@@ -289,9 +297,9 @@ class _Step extends StatelessWidget {
         color: AppColors.error,
         size: 20,
       ),
-      _StepState.next => const Icon(
+      _StepState.next => Icon(
         Icons.radio_button_unchecked,
-        color: AppColors.border,
+        color: context.palette.border,
         size: 20,
       ),
     };
@@ -302,7 +310,9 @@ class _Step extends StatelessWidget {
       title: Text(
         label,
         style: TextStyle(
-          color: state == _StepState.next ? AppColors.muted : AppColors.ink,
+          color: state == _StepState.next
+              ? context.palette.muted
+              : context.palette.text,
           fontWeight: state == _StepState.working
               ? FontWeight.w700
               : FontWeight.w500,

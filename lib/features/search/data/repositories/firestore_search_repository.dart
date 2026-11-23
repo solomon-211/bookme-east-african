@@ -26,12 +26,16 @@ class FirestoreSearchRepository implements SearchRepository {
     final snapshot = await _trips
         .where('origin', isEqualTo: origin)
         .where('destination', isEqualTo: destination)
-        .where('departureTime', isGreaterThanOrEqualTo: Timestamp.fromDate(from))
+        .where(
+          'departureTime',
+          isGreaterThanOrEqualTo: Timestamp.fromDate(from),
+        )
         .where('departureTime', isLessThan: Timestamp.fromDate(to))
         .orderBy('departureTime')
         .get();
     return [
-      for (final doc in snapshot.docs) ?BusTripModel.fromMap(doc.id, doc.data()),
+      for (final doc in snapshot.docs)
+        ?BusTripModel.fromMap(doc.id, doc.data()),
     ];
   });
 

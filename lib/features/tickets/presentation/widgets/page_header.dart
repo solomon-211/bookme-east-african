@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:bookme_summative_project/core/theme/app_colors.dart';
+import 'package:bookme_summative_project/core/theme/app_palette.dart';
 
 /// Round back button, page title and a one-line subtitle, as at the top of
 /// Ready for Journey and Manage Booking.
@@ -17,15 +17,15 @@ class PageHeader extends StatelessWidget {
       child: Row(
         children: [
           Material(
-            color: AppColors.card,
-            shape: const CircleBorder(
-              side: BorderSide(color: AppColors.border),
+            color: context.palette.card,
+            shape: CircleBorder(
+              side: BorderSide(color: context.palette.border),
             ),
             child: IconButton(
               tooltip: 'Back',
               onPressed: () => Navigator.of(context).maybePop(),
               icon: const Icon(Icons.arrow_back, size: 20),
-              color: AppColors.ink,
+              color: context.palette.text,
               // 36 like the design. The header row around it is tall
               // enough that nothing else sits within reach of the thumb.
               constraints: const BoxConstraints.tightFor(width: 36, height: 36),
@@ -39,11 +39,11 @@ class PageHeader extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 18,
                     height: 1.4,
                     fontWeight: FontWeight.w700,
-                    color: AppColors.ink,
+                    color: context.palette.text,
                   ),
                 ),
                 const SizedBox(height: 2),
@@ -51,10 +51,10 @@ class PageHeader extends StatelessWidget {
                   subtitle,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 11,
                     height: 1.4,
-                    color: AppColors.muted,
+                    color: context.palette.muted,
                   ),
                 ),
               ],

@@ -132,11 +132,9 @@ class InMemoryTicketsDataSource implements TicketsDataSource {
   Stream<List<Ticket>> watchMyTickets() => _watch(_myTickets);
 
   @override
-  Stream<Ticket> watchTicket(String bookingId) =>
-      _watch(() => _tickets[bookingId])
-          .where((ticket) => ticket != null)
-          .cast<Ticket>()
-          .distinct();
+  Stream<Ticket> watchTicket(String bookingId) => _watch(
+    () => _tickets[bookingId],
+  ).where((ticket) => ticket != null).cast<Ticket>().distinct();
 
   /// Same filter and order as the Firestore query.
   List<Ticket> _myTickets() {

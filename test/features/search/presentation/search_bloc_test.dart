@@ -180,10 +180,9 @@ void main() {
     wait: Duration.zero,
     verify: (b) {
       expect(repository.searchCalls, 1);
-      expect(
-        b.state.visibleTrips.map((t) => t.operatorName).toSet(),
-        {'Trinity Express'},
-      );
+      expect(b.state.visibleTrips.map((t) => t.operatorName).toSet(), {
+        'Trinity Express',
+      });
     },
   );
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:bookme_summative_project/core/theme/app_colors.dart';
+import 'package:bookme_summative_project/core/theme/app_palette.dart';
 import 'package:bookme_summative_project/core/utils/formatters.dart';
 import 'package:bookme_summative_project/features/booking/domain/entities/trip_summary.dart';
 
@@ -25,8 +26,8 @@ class TripSummaryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final fg = dark ? Colors.white : AppColors.ink;
-    final soft = dark ? Colors.white70 : AppColors.muted;
+    final fg = dark ? Colors.white : context.palette.text;
+    final soft = dark ? Colors.white70 : context.palette.muted;
     final textTheme = Theme.of(context).textTheme;
     final timeStyle = textTheme.headlineSmall?.copyWith(
       color: fg,
@@ -38,9 +39,9 @@ class TripSummaryCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: dark ? AppColors.ink : AppColors.card,
+        color: dark ? AppColors.ink : context.palette.card,
         borderRadius: BorderRadius.circular(16),
-        border: dark ? null : Border.all(color: AppColors.border),
+        border: dark ? null : Border.all(color: context.palette.border),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -158,8 +159,9 @@ class _JourneyLine extends StatelessWidget {
           children: [
             Text(
               label,
-              style: Theme.of(context).textTheme.labelSmall
-                  ?.copyWith(color: color),
+              style: Theme.of(
+                context,
+              ).textTheme.labelSmall?.copyWith(color: color),
             ),
             const SizedBox(height: 4),
             Row(

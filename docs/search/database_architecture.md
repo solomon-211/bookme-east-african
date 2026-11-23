@@ -1,7 +1,7 @@
 # Search: ERD and database architecture
 
 Owner: Search (Home search, Results, Filters, Waitlist, Trip details).
-Database: Cloud Firestore (project `bookme-a73fd`).
+Database: Cloud Firestore (project `bookme-east-africa`).
 
 ## 1. Entity relationship diagram
 
@@ -110,7 +110,7 @@ trade-off: if an operator's rating changes, the seed or an admin job must
 re-copy it. That's acceptable because ratings change rarely and trips are
 regenerated often.
 
-**Shared field names.** Trips use the names from `lib/data/models/trip.dart`
+**Shared field names.** Trips use the team's original field names
 (`origin`, `destination`, `departureTime`, `price`, ...) and add `fromCode`,
 `fromStation`, `toCode`, `toStation`, `taxes` and `serviceFee`. Tickets'
 `TripDocumentMapper` reads the same documents with no changes. A test checks

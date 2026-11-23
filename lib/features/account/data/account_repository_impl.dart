@@ -128,7 +128,7 @@ class AccountRepositoryImpl implements AccountRepository {
       phone: phone,
       email: map['email'] as String? ?? user?.email,
       // Verified means Firebase Auth confirmed it by SMS.
-      phoneVerified: user?.phoneNumber != null && user!.phoneNumber == phone,
+      phoneVerified: phone.isNotEmpty && user?.phoneNumber == phone,
       idDocument: id is Map
           ? IdDocument(
               type: id['type'] as String? ?? 'EAC ID',

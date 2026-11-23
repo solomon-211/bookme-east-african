@@ -18,22 +18,21 @@ class AppUser extends Equatable {
   final String? phoneNumber;
   final String? photoUrl;
 
-  /// Key of [paymentMethods] (e.g. `mtn_momo`). Stored in Firestore only.
+  /// Preferred payment key, e.g. `mtn_momo`. Stored in Firestore only.
   final String? preferredPayment;
 
   factory AppUser.fromFirebase(
     User user, {
     String? displayName,
     String? preferredPayment,
-  }) =>
-      AppUser(
-        uid: user.uid,
-        displayName: displayName ?? user.displayName,
-        email: user.email,
-        phoneNumber: user.phoneNumber,
-        photoUrl: user.photoURL,
-        preferredPayment: preferredPayment,
-      );
+  }) => AppUser(
+    uid: user.uid,
+    displayName: displayName ?? user.displayName,
+    email: user.email,
+    phoneNumber: user.phoneNumber,
+    photoUrl: user.photoURL,
+    preferredPayment: preferredPayment,
+  );
 
   /// Name to show in the UI, falling back to email/phone.
   String get label {
@@ -44,6 +43,12 @@ class AppUser extends Equatable {
   }
 
   @override
-  List<Object?> get props =>
-      [uid, displayName, email, phoneNumber, photoUrl, preferredPayment];
+  List<Object?> get props => [
+    uid,
+    displayName,
+    email,
+    phoneNumber,
+    photoUrl,
+    preferredPayment,
+  ];
 }

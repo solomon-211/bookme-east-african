@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:bookme_summative_project/core/theme/app_colors.dart';
+import 'package:bookme_summative_project/core/theme/app_palette.dart';
 
 /// White rounded card holding one switch, e.g. "Someone else is paying".
 ///
@@ -29,10 +30,10 @@ class ToggleCard extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     final shape = RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(14),
-      side: const BorderSide(color: AppColors.border),
+      side: BorderSide(color: context.palette.border),
     );
     return Material(
-      color: AppColors.card,
+      color: context.palette.card,
       shape: shape,
       clipBehavior: Clip.antiAlias,
       child: SwitchListTile(
@@ -45,12 +46,12 @@ class ToggleCard extends StatelessWidget {
           title,
           style: textTheme.bodyMedium?.copyWith(
             fontWeight: FontWeight.w700,
-            color: AppColors.ink,
+            color: context.palette.text,
           ),
         ),
         subtitle: Text(
           subtitle,
-          style: textTheme.bodySmall?.copyWith(color: AppColors.muted),
+          style: textTheme.bodySmall?.copyWith(color: context.palette.muted),
         ),
       ),
     );

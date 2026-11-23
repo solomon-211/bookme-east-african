@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:bookme_summative_project/core/theme/app_colors.dart';
+import 'package:bookme_summative_project/core/theme/app_palette.dart';
 import 'package:bookme_summative_project/core/utils/formatters.dart';
 import 'package:bookme_summative_project/features/booking/presentation/widgets/info_note.dart';
 import 'package:bookme_summative_project/features/tickets/domain/entities/ticket.dart';
@@ -78,8 +79,9 @@ class ManageBookingView extends StatelessWidget {
         }
         final message = state.message;
         if (message != null) {
-          ScaffoldMessenger.of(context)
-              .showSnackBar(SnackBar(content: Text(message)));
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(message)));
         }
       },
       builder: (context, state) {
@@ -93,7 +95,7 @@ class ManageBookingView extends StatelessWidget {
         );
 
         return Scaffold(
-          backgroundColor: AppColors.surface,
+          backgroundColor: context.palette.background,
           body: SafeArea(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -315,7 +317,7 @@ class _RefundCard extends StatelessWidget {
         Text(
           '100% refund for operator cancellations or delays over 2 hours. '
           '$_policy',
-          style: _bodyStyle,
+          style: _bodyStyle(context),
         ),
         _AmountRow(
           label: 'Original payment',
@@ -326,9 +328,9 @@ class _RefundCard extends StatelessWidget {
           amount: Formatters.money(quote.refund, currency),
           color: AppColors.success,
         ),
-        const Text(
+        Text(
           'Refunds go back to the original mobile money number or card.',
-          style: _noteStyle,
+          style: _noteStyle(context),
         ),
         _DangerButton(
           label: 'Cancel / Request Refund',
@@ -360,7 +362,7 @@ class _CancelledCard extends StatelessWidget {
                     'back to the original payment method. Processing time '
                     'depends on the payment provider.'
               : 'No refund was due for this cancellation.',
-          style: _bodyStyle,
+          style: _bodyStyle(context),
         ),
       ],
     );
@@ -378,10 +380,10 @@ class _RemoveCard extends StatelessWidget {
     return _WhiteCard(
       children: [
         const _CardTitle('Remove from history'),
-        const Text(
+        Text(
           'Deletes this trip from My Trips. Upcoming trips have to be '
           'cancelled first.',
-          style: _bodyStyle,
+          style: _bodyStyle(context),
         ),
         _DangerButton(
           label: 'Remove from History',
@@ -393,17 +395,11 @@ class _RemoveCard extends StatelessWidget {
   }
 }
 
-const TextStyle _bodyStyle = TextStyle(
-  fontSize: 12,
-  height: 1.4,
-  color: AppColors.muted,
-);
+TextStyle _bodyStyle(BuildContext context) =>
+    TextStyle(fontSize: 12, height: 1.4, color: context.palette.muted);
 
-const TextStyle _noteStyle = TextStyle(
-  fontSize: 11,
-  height: 1.4,
-  color: AppColors.muted,
-);
+TextStyle _noteStyle(BuildContext context) =>
+    TextStyle(fontSize: 11, height: 1.4, color: context.palette.muted);
 
 class _WhiteCard extends StatelessWidget {
   const _WhiteCard({required this.children});
@@ -415,9 +411,9 @@ class _WhiteCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.card,
+        color: context.palette.card,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: context.palette.border),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -437,26 +433,24 @@ class _CardTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: const TextStyle(
+      style: TextStyle(
         fontSize: 17,
         height: 1.4,
         fontWeight: FontWeight.w700,
-        color: AppColors.ink,
+        color: context.palette.text,
       ),
     );
   }
 }
 
 class _AmountRow extends StatelessWidget {
-  const _AmountRow({
-    required this.label,
-    required this.amount,
-    this.color = AppColors.ink,
-  });
+  const _AmountRow({required this.label, required this.amount, this.color});
 
   final String label;
   final String amount;
-  final Color color;
+
+  /// Defaults to the theme's text colour.
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -465,7 +459,7 @@ class _AmountRow extends StatelessWidget {
         Expanded(
           child: Text(
             label,
-            style: const TextStyle(fontSize: 14, color: AppColors.ink),
+            style: TextStyle(fontSize: 14, color: context.palette.text),
           ),
         ),
         Text(
@@ -473,7 +467,7 @@ class _AmountRow extends StatelessWidget {
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w700,
-            color: color,
+            color: color ?? context.palette.text,
           ),
         ),
       ],
@@ -501,8 +495,8 @@ class _DangerButton extends StatelessWidget {
         onPressed: working ? null : onPressed,
         style: OutlinedButton.styleFrom(
           foregroundColor: AppColors.error,
-          backgroundColor: AppColors.card,
-          side: const BorderSide(color: AppColors.border),
+          backgroundColor: context.palette.card,
+          side: BorderSide(color: context.palette.border),
           shape: const StadiumBorder(),
         ),
         child: working

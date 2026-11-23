@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:bookme_summative_project/core/theme/app_colors.dart';
+import 'package:bookme_summative_project/core/theme/app_palette.dart';
 import 'package:bookme_summative_project/features/tickets/domain/utils/border_crossing.dart';
 
 /// "Before you cross into Uganda" card with ticked and open requirements.
@@ -22,19 +23,19 @@ class BorderChecklistCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.card,
+        color: context.palette.card,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: context.palette.border),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             'Before you cross into $country',
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 17,
               fontWeight: FontWeight.w700,
-              color: AppColors.ink,
+              color: context.palette.text,
             ),
           ),
           for (final check in checks) ...[
@@ -78,10 +79,10 @@ class _CheckRow extends StatelessWidget {
             width: 20,
             height: 20,
             decoration: BoxDecoration(
-              color: check.done ? AppColors.success : Colors.white,
+              color: check.done ? AppColors.success : context.palette.card,
               borderRadius: BorderRadius.circular(5),
               border: Border.all(
-                color: check.done ? AppColors.success : AppColors.border,
+                color: check.done ? AppColors.success : context.palette.border,
               ),
             ),
             child: check.done
@@ -92,11 +93,11 @@ class _CheckRow extends StatelessWidget {
           Expanded(
             child: Text(
               check.label,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 13,
                 height: 1.4,
                 fontWeight: FontWeight.w500,
-                color: AppColors.ink,
+                color: context.palette.text,
               ),
             ),
           ),

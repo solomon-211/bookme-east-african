@@ -89,7 +89,11 @@ class _SearchForm extends StatelessWidget {
                 text: q.origin.label,
                 semanticsLabel: 'From ${q.origin.label}. Change',
                 onTap: () async {
-                  final city = await pickCity(context, title: 'Leaving from', selected: q.origin);
+                  final city = await pickCity(
+                    context,
+                    title: 'Leaving from',
+                    selected: q.origin,
+                  );
                   if (city != null) bloc.add(SearchOriginChanged(city));
                 },
               ),
@@ -110,7 +114,11 @@ class _SearchForm extends StatelessWidget {
                 text: q.destination.label,
                 semanticsLabel: 'To ${q.destination.label}. Change',
                 onTap: () async {
-                  final city = await pickCity(context, title: 'Going to', selected: q.destination);
+                  final city = await pickCity(
+                    context,
+                    title: 'Going to',
+                    selected: q.destination,
+                  );
                   if (city != null) bloc.add(SearchDestinationChanged(city));
                 },
               ),
@@ -125,9 +133,14 @@ class _SearchForm extends StatelessWidget {
                         _PickerField(
                           icon: Icons.calendar_today_outlined,
                           text: Formatters.shortDate(q.date),
-                          semanticsLabel: 'Departure ${Formatters.shortDate(q.date)}. Change',
+                          semanticsLabel:
+                              'Departure ${Formatters.shortDate(q.date)}. Change',
                           onTap: () async {
-                            final date = await _pickDate(context, initial: q.date, first: DateTime.now());
+                            final date = await _pickDate(
+                              context,
+                              initial: q.date,
+                              first: DateTime.now(),
+                            );
                             if (date != null) bloc.add(SearchDateChanged(date));
                           },
                         ),
@@ -154,7 +167,9 @@ class _SearchForm extends StatelessWidget {
                                   tooltip: 'Remove return date',
                                   visualDensity: VisualDensity.compact,
                                   icon: const Icon(Icons.close, size: 18),
-                                  onPressed: () => bloc.add(const SearchReturnDateChanged(null)),
+                                  onPressed: () => bloc.add(
+                                    const SearchReturnDateChanged(null),
+                                  ),
                                 ),
                           onTap: () async {
                             final date = await _pickDate(
@@ -162,7 +177,9 @@ class _SearchForm extends StatelessWidget {
                               initial: q.returnDate ?? q.date,
                               first: q.date,
                             );
-                            if (date != null) bloc.add(SearchReturnDateChanged(date));
+                            if (date != null) {
+                              bloc.add(SearchReturnDateChanged(date));
+                            }
                           },
                         ),
                       ],
@@ -176,7 +193,9 @@ class _SearchForm extends StatelessWidget {
                 value: q.adults,
                 min: 1,
                 max: SearchQuery.maxPassengers - q.children,
-                onChanged: (v) => bloc.add(SearchPassengersChanged(adults: v, children: q.children)),
+                onChanged: (v) => bloc.add(
+                  SearchPassengersChanged(adults: v, children: q.children),
+                ),
               ),
               const SizedBox(height: 4),
               _CounterRow(
@@ -184,7 +203,9 @@ class _SearchForm extends StatelessWidget {
                 value: q.children,
                 min: 0,
                 max: SearchQuery.maxPassengers - q.adults,
-                onChanged: (v) => bloc.add(SearchPassengersChanged(adults: q.adults, children: v)),
+                onChanged: (v) => bloc.add(
+                  SearchPassengersChanged(adults: q.adults, children: v),
+                ),
               ),
               const SizedBox(height: 16),
               PrimaryButton(
@@ -199,7 +220,10 @@ class _SearchForm extends StatelessWidget {
                   child: Text(
                     state.formError!,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(color: AppColors.error, fontSize: 13),
+                    style: const TextStyle(
+                      color: AppColors.error,
+                      fontSize: 13,
+                    ),
                   ),
                 ),
               ],
@@ -244,7 +268,9 @@ class _BookAgain extends StatelessWidget {
       buildWhen: (a, b) => a.recentRoutes != b.recentRoutes,
       builder: (context, state) {
         final recent = state.recentRoutes.isNotEmpty;
-        final routes = recent ? state.recentRoutes : SearchHomePage.popularRoutes;
+        final routes = recent
+            ? state.recentRoutes
+            : SearchHomePage.popularRoutes;
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -253,7 +279,10 @@ class _BookAgain extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(bottom: 10),
                 child: SurfaceCard(
-                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 14,
+                    vertical: 12,
+                  ),
                   onTap: () => context.read<SearchBloc>()
                     ..add(SearchRecentSelected(route))
                     ..add(const SearchSubmitted()),
@@ -279,13 +308,19 @@ class _BookAgain extends StatelessWidget {
                           children: [
                             Text(
                               '${route.origin.name} → ${route.destination.name}',
-                              style: TextStyle(fontWeight: FontWeight.w600, color: palette.text),
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                color: palette.text,
+                              ),
                             ),
                             Text(
                               recent
                                   ? 'Searched recently · Tap to search again'
                                   : '${route.origin.country} → ${route.destination.country}',
-                              style: TextStyle(fontSize: 12, color: palette.muted),
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: palette.muted,
+                              ),
                             ),
                           ],
                         ),
@@ -358,12 +393,17 @@ class _PickerField extends StatelessWidget {
           side: BorderSide(color: palette.border),
         ),
         child: InkWell(
-          customBorder: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+          customBorder: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+          ),
           onTap: onTap,
           child: ConstrainedBox(
             constraints: const BoxConstraints(minHeight: 50),
             child: Padding(
-              padding: EdgeInsets.only(left: 14, right: trailing == null ? 14 : 2),
+              padding: EdgeInsets.only(
+                left: 14,
+                right: trailing == null ? 14 : 2,
+              ),
               child: Row(
                 children: [
                   if (icon != null) ...[
@@ -412,7 +452,9 @@ class _CounterRow extends StatelessWidget {
     final style = IconButton.styleFrom(side: BorderSide(color: palette.border));
     return Row(
       children: [
-        Expanded(child: Text(label, style: TextStyle(color: palette.text))),
+        Expanded(
+          child: Text(label, style: TextStyle(color: palette.text)),
+        ),
         IconButton(
           tooltip: 'Fewer ${label.toLowerCase()}',
           onPressed: value > min ? () => onChanged(value - 1) : null,
@@ -428,7 +470,10 @@ class _CounterRow extends StatelessWidget {
             child: Text(
               '$value',
               textAlign: TextAlign.center,
-              style: TextStyle(fontWeight: FontWeight.w700, color: palette.text),
+              style: TextStyle(
+                fontWeight: FontWeight.w700,
+                color: palette.text,
+              ),
             ),
           ),
         ),
@@ -463,13 +508,19 @@ Future<City?> pickCity(
               padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
               child: Text(
                 title,
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: palette.text),
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
+                  color: palette.text,
+                ),
               ),
             ),
             for (final city in Cities.all)
               ListTile(
                 leading: Icon(
-                  city == selected ? Icons.radio_button_checked : Icons.radio_button_off,
+                  city == selected
+                      ? Icons.radio_button_checked
+                      : Icons.radio_button_off,
                   color: city == selected ? palette.link : palette.muted,
                 ),
                 title: Text(city.name),

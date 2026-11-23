@@ -28,9 +28,13 @@ class SearchQuery extends Equatable {
 
   /// `null` when the query can be searched, otherwise what to fix.
   String? get problem {
-    if (origin == destination) return 'Pick a destination different from where you leave.';
+    if (origin == destination) {
+      return 'Pick a destination different from where you leave.';
+    }
     if (adults < 1) return 'At least one adult must travel.';
-    if (passengers > maxPassengers) return 'You can book up to $maxPassengers seats at once.';
+    if (passengers > maxPassengers) {
+      return 'You can book up to $maxPassengers seats at once.';
+    }
     final back = returnDate;
     if (back != null && dayOf(back).isBefore(dayOf(date))) {
       return 'The return date must be on or after the departure date.';

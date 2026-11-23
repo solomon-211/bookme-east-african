@@ -16,6 +16,10 @@ class AppPalette {
     required this.successSoft,
     required this.warningSoft,
     required this.warningIcon,
+    required this.warningText,
+    required this.limeSoft,
+    required this.accent,
+    required this.onAccent,
   });
 
   final Color background;
@@ -28,6 +32,12 @@ class AppPalette {
   final Color successSoft;
   final Color warningSoft;
   final Color warningIcon;
+  final Color warningText;
+  final Color limeSoft; // selected option background
+
+  // Main buttons and selected pills: ink in light mode, lime in dark mode.
+  final Color accent;
+  final Color onAccent;
 
   static const light = AppPalette._(
     background: AppColors.surface,
@@ -40,6 +50,10 @@ class AppPalette {
     successSoft: AppColors.successSoft,
     warningSoft: AppColors.warningSoft,
     warningIcon: Color(0xFFB7791F),
+    warningText: AppColors.warningText,
+    limeSoft: AppColors.limeSoft,
+    accent: AppColors.ink,
+    onAccent: Colors.white,
   );
 
   static const dark = AppPalette._(
@@ -53,6 +67,10 @@ class AppPalette {
     successSoft: Color(0xFF15301F),
     warningSoft: Color(0xFF3A2E14),
     warningIcon: Color(0xFFF2C46B),
+    warningText: Color(0xFFF2C46B),
+    limeSoft: Color(0xFF2B3318),
+    accent: AppColors.lime,
+    onAccent: AppColors.ink,
   );
 
   // Dark slate behind "Travel with confidence" and the escrow amount.
@@ -61,4 +79,9 @@ class AppPalette {
 
   static AppPalette of(BuildContext context) =>
       Theme.of(context).brightness == Brightness.dark ? dark : light;
+}
+
+/// `context.palette.card` instead of `AppPalette.of(context).card`.
+extension AppPaletteContext on BuildContext {
+  AppPalette get palette => AppPalette.of(this);
 }

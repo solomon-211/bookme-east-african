@@ -64,7 +64,9 @@ class _FiltersPageState extends State<FiltersPage> {
                   ),
                   const SizedBox(height: 16),
                   const SectionHeading('Price per adult'),
-                  SurfaceCard(child: _priceSection(range, state.currency, palette)),
+                  SurfaceCard(
+                    child: _priceSection(range, state.currency, palette),
+                  ),
                   const SizedBox(height: 16),
                   const SectionHeading('Operator'),
                   SurfaceCard(
@@ -73,7 +75,8 @@ class _FiltersPageState extends State<FiltersPage> {
                       children: [
                         for (final o in options)
                           CheckboxListTile(
-                            value: _draft.operatorIds.isEmpty ||
+                            value:
+                                _draft.operatorIds.isEmpty ||
                                 _draft.operatorIds.contains(o.id),
                             title: Text(o.name),
                             controlAffinity: ListTileControlAffinity.leading,
@@ -82,8 +85,10 @@ class _FiltersPageState extends State<FiltersPage> {
                         if (options.isEmpty)
                           Padding(
                             padding: const EdgeInsets.all(16),
-                            child: Text('No operators on this route.',
-                                style: TextStyle(color: palette.muted)),
+                            child: Text(
+                              'No operators on this route.',
+                              style: TextStyle(color: palette.muted),
+                            ),
                           ),
                       ],
                     ),
@@ -135,7 +140,10 @@ class _FiltersPageState extends State<FiltersPage> {
 
   Widget _priceSection(PriceRange? range, String currency, AppPalette palette) {
     if (range == null) {
-      return Text('No prices to filter.', style: TextStyle(color: palette.muted));
+      return Text(
+        'No prices to filter.',
+        style: TextStyle(color: palette.muted),
+      );
     }
     final low = (_draft.minPrice ?? range.min).clamp(range.min, range.max);
     final high = (_draft.maxPrice ?? range.max).clamp(range.min, range.max);
@@ -143,9 +151,13 @@ class _FiltersPageState extends State<FiltersPage> {
       padding: const EdgeInsets.symmetric(vertical: 2),
       child: Row(
         children: [
-          Expanded(child: Text(label, style: TextStyle(color: palette.muted))),
-          Text(Formatters.money(value, currency),
-              style: TextStyle(fontWeight: FontWeight.w700, color: palette.text)),
+          Expanded(
+            child: Text(label, style: TextStyle(color: palette.muted)),
+          ),
+          Text(
+            Formatters.money(value, currency),
+            style: TextStyle(fontWeight: FontWeight.w700, color: palette.text),
+          ),
         ],
       ),
     );
@@ -166,13 +178,17 @@ class _FiltersPageState extends State<FiltersPage> {
             onChanged: (v) {
               final min = v.start.round();
               final max = v.end.round();
-              _set(min <= range.min && max >= range.max
-                  ? _draft.copyWith(clearPrice: true)
-                  : _draft.copyWith(minPrice: min, maxPrice: max));
+              _set(
+                min <= range.min && max >= range.max
+                    ? _draft.copyWith(clearPrice: true)
+                    : _draft.copyWith(minPrice: min, maxPrice: max),
+              );
             },
           ),
-        Text('Includes taxes and service fees',
-            style: TextStyle(fontSize: 12, color: palette.link)),
+        Text(
+          'Includes taxes and service fees',
+          style: TextStyle(fontSize: 12, color: palette.link),
+        ),
       ],
     );
   }
@@ -181,14 +197,20 @@ class _FiltersPageState extends State<FiltersPage> {
   /// refused instead of silently meaning "all".
   void _toggleOperator(String id, List<OperatorOption> options) {
     final all = {for (final o in options) o.id};
-    final current = _draft.operatorIds.isEmpty ? {...all} : {..._draft.operatorIds};
+    final current = _draft.operatorIds.isEmpty
+        ? {...all}
+        : {..._draft.operatorIds};
     if (!current.remove(id)) current.add(id);
     if (current.isEmpty) {
       ScaffoldMessenger.of(context)
         ..hideCurrentSnackBar()
-        ..showSnackBar(const SnackBar(content: Text('Keep at least one operator.')));
+        ..showSnackBar(
+          const SnackBar(content: Text('Keep at least one operator.')),
+        );
       return;
     }
-    _set(_draft.copyWith(operatorIds: current.length == all.length ? {} : current));
+    _set(
+      _draft.copyWith(operatorIds: current.length == all.length ? {} : current),
+    );
   }
 }

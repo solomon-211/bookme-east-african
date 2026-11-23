@@ -10,6 +10,12 @@
 include: package:flutter_lints/flutter.yaml
 
 analyzer:
+  errors:
+    # Flutter 3.47+ marks package:flutter/material.dart as deprecated in
+    # favour of the separate material_ui package. material_ui needs Flutter
+    # 3.47 or newer, so switching would stop the app building for anyone on
+    # an older SDK. Every other deprecation in the code has been fixed.
+    deprecated_member_use: ignore
   exclude:
     - build/**
     - android/**

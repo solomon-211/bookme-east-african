@@ -6,6 +6,8 @@ import 'package:flutter/foundation.dart'
 
 /// Default [FirebaseOptions] for use with your Firebase apps.
 ///
+/// BookMe is a mobile app, so only Android and iOS are configured.
+///
 /// Example:
 /// ```dart
 /// import 'firebase_options.dart';
@@ -17,70 +19,39 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      return web;
+      throw UnsupportedError(
+        'BookMe runs on Android and iOS only; web is not configured.',
+      );
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return android;
       case TargetPlatform.iOS:
         return ios;
-      case TargetPlatform.macOS:
-        return macos;
-      case TargetPlatform.windows:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for windows - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
-      case TargetPlatform.linux:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for linux - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
       default:
         throw UnsupportedError(
-          'DefaultFirebaseOptions are not supported for this platform.',
+          'BookMe runs on Android and iOS only; '
+          '$defaultTargetPlatform is not configured.',
         );
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCeXw1ES7hwJDzhiNCrOM1XK3GiIAiifYI',
-    appId: '1:233973502316:web:50203157c62c85ff916349',
-    messagingSenderId: '233973502316',
-    projectId: 'bookme-a73fd',
-    authDomain: 'bookme-a73fd.firebaseapp.com',
-    databaseURL: 'https://bookme-a73fd-default-rtdb.firebaseio.com',
-    storageBucket: 'bookme-a73fd.firebasestorage.app',
+  static const FirebaseOptions android = FirebaseOptions(
+    apiKey: 'AIzaSyDX10TUsXKyp0XXhUNhtgSC_JzGV-nbTzo',
+    appId: '1:339693601645:android:cc76d3ee9a59f07796d064',
+    messagingSenderId: '339693601645',
+    projectId: 'bookme-east-africa',
+    storageBucket: 'bookme-east-africa.firebasestorage.app',
   );
 
-  static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyADcWnsaKojwS41AU0BnYzmiK0p7-MsMMs',
-    appId: '1:233973502316:android:798eb6ffbb788700916349',
-    messagingSenderId: '233973502316',
-    projectId: 'bookme-a73fd',
-    databaseURL: 'https://bookme-a73fd-default-rtdb.firebaseio.com',
-    storageBucket: 'bookme-a73fd.firebasestorage.app',
-  );
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBfvkROKZBAsYfOR-WHmgW4B8h_MN_Zpks',
-    appId: '1:233973502316:ios:2b1f337a7c57fcf6916349',
-    messagingSenderId: '233973502316',
-    projectId: 'bookme-a73fd',
-    databaseURL: 'https://bookme-a73fd-default-rtdb.firebaseio.com',
-    storageBucket: 'bookme-a73fd.firebasestorage.app',
-    androidClientId: '233973502316-nh21csf5a2hqbtocjvl5epldlmtmmt68.apps.googleusercontent.com',
-    iosClientId: '233973502316-97dbhnlb0pluc7nu03roaao8ogd3li34.apps.googleusercontent.com',
-    iosBundleId: 'com.example.bookmeSummativeProject',
-  );
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyBfvkROKZBAsYfOR-WHmgW4B8h_MN_Zpks',
-    appId: '1:233973502316:ios:2b1f337a7c57fcf6916349',
-    messagingSenderId: '233973502316',
-    projectId: 'bookme-a73fd',
-    databaseURL: 'https://bookme-a73fd-default-rtdb.firebaseio.com',
-    storageBucket: 'bookme-a73fd.firebasestorage.app',
-    androidClientId: '233973502316-nh21csf5a2hqbtocjvl5epldlmtmmt68.apps.googleusercontent.com',
-    iosClientId: '233973502316-97dbhnlb0pluc7nu03roaao8ogd3li34.apps.googleusercontent.com',
+    apiKey: 'AIzaSyDJkfQNA4zNZVHn1E9FYkUO-2yxHSv4DZQ',
+    appId: '1:339693601645:ios:a68e4a7837b2e99a96d064',
+    messagingSenderId: '339693601645',
+    projectId: 'bookme-east-africa',
+    storageBucket: 'bookme-east-africa.firebasestorage.app',
+    iosClientId:
+        '339693601645-u6ngfp28thlgatp1tktnbaifi20v1rgi.apps.googleusercontent.com',
     iosBundleId: 'com.example.bookmeSummativeProject',
   );
 }

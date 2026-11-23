@@ -26,7 +26,9 @@ class AuthFailure implements Exception {
       case 'too-many-requests':
         return const AuthFailure('Too many attempts. Try again later.');
       case 'network-request-failed':
-        return const AuthFailure('No connection. Check your internet and retry.');
+        return const AuthFailure(
+          'No connection. Check your internet and retry.',
+        );
       case 'invalid-phone-number':
         return const AuthFailure('That phone number is not valid.');
       case 'invalid-verification-code':
@@ -49,9 +51,9 @@ class AuthRepository {
     FirebaseAuth? auth,
     FirebaseFirestore? firestore,
     GoogleSignIn? googleSignIn,
-  })  : _auth = auth ?? FirebaseAuth.instance,
-        _db = firestore ?? FirebaseFirestore.instance,
-        _google = googleSignIn ?? GoogleSignIn();
+  }) : _auth = auth ?? FirebaseAuth.instance,
+       _db = firestore ?? FirebaseFirestore.instance,
+       _google = googleSignIn ?? GoogleSignIn();
 
   final FirebaseAuth _auth;
   final FirebaseFirestore _db;
@@ -75,27 +77,26 @@ class AuthRepository {
   // ---------------------------------------------------------------- Email
 
   Future<void> signInWithEmail(String email, String password) => _guard(
-        () => _auth.signInWithEmailAndPassword(
-          email: email.trim(),
-          password: password,
-        ),
-      );
+    () => _auth.signInWithEmailAndPassword(
+      email: email.trim(),
+      password: password,
+    ),
+  );
 
   Future<void> registerWithEmail({
     required String name,
     required String email,
     required String password,
-  }) =>
-      _guard(() async {
-        final cred = await _auth.createUserWithEmailAndPassword(
-          email: email.trim(),
-          password: password,
-        );
-        final user = cred.user!;
-        await user.updateDisplayName(name.trim());
-        await syncUserProfile(user, displayName: name.trim());
-        await user.reload();
-      });
+  }) => _guard(() async {
+    final cred = await _auth.createUserWithEmailAndPassword(
+      email: email.trim(),
+      password: password,
+    );
+    final user = cred.user!;
+    await user.updateDisplayName(name.trim());
+    await syncUserProfile(user, displayName: name.trim());
+    await user.reload();
+  });
 
   Future<void> sendPasswordReset(String email) =>
       _guard(() => _auth.sendPasswordResetEmail(email: email.trim()));
@@ -104,16 +105,16 @@ class AuthRepository {
 
   /// Returns false when the user dismissed the Google account picker.
   Future<bool> signInWithGoogle() => _guard(() async {
-        final account = await _google.signIn();
-        if (account == null) return false;
-        final googleAuth = await account.authentication;
-        final credential = GoogleAuthProvider.credential(
-          accessToken: googleAuth.accessToken,
-          idToken: googleAuth.idToken,
-        );
-        await _auth.signInWithCredential(credential);
-        return true;
-      });
+    final account = await _google.signIn();
+    if (account == null) return false;
+    final googleAuth = await account.authentication;
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+    await _auth.signInWithCredential(credential);
+    return true;
+  });
 
   // ---------------------------------------------------------------- Phone
 
@@ -136,10 +137,12 @@ class AuthRepository {
   }
 
   Future<void> signInWithSmsCode(String verificationId, String smsCode) =>
-      signInWithCredential(PhoneAuthProvider.credential(
-        verificationId: verificationId,
-        smsCode: smsCode,
-      ));
+      signInWithCredential(
+        PhoneAuthProvider.credential(
+          verificationId: verificationId,
+          smsCode: smsCode,
+        ),
+      );
 
   Future<void> signInWithCredential(AuthCredential credential) =>
       _guard(() => _auth.signInWithCredential(credential));

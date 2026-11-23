@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:bookme_summative_project/core/theme/app_colors.dart';
+import 'package:bookme_summative_project/core/theme/app_palette.dart';
 import 'package:bookme_summative_project/core/utils/formatters.dart';
 import 'package:bookme_summative_project/features/booking/domain/entities/trip_summary.dart';
 
@@ -19,9 +20,9 @@ class TripRouteRow extends StatelessWidget {
     final timeStyle = TextStyle(
       fontSize: 22,
       fontWeight: FontWeight.w700,
-      color: dark ? Colors.white : AppColors.ink,
+      color: dark ? Colors.white : context.palette.text,
     );
-    const placeStyle = TextStyle(fontSize: 10, color: AppColors.muted);
+    final placeStyle = TextStyle(fontSize: 10, color: context.palette.muted);
 
     return Row(
       children: [
@@ -96,7 +97,7 @@ class _JourneyLine extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final lineColor = dark ? Colors.white : AppColors.ink;
+    final lineColor = dark ? Colors.white : context.palette.text;
     final accent = dark ? AppColors.lime : AppColors.success;
     final line = Expanded(child: Container(height: 1, color: lineColor));
 
@@ -109,7 +110,7 @@ class _JourneyLine extends StatelessWidget {
           children: [
             Text(
               label,
-              style: const TextStyle(fontSize: 10, color: AppColors.muted),
+              style: TextStyle(fontSize: 10, color: context.palette.muted),
             ),
             const SizedBox(height: 4),
             Row(

@@ -1,13 +1,11 @@
-import 'package:bookme_summative_project/demo/trust_account_demo_app.dart';
-import 'package:bookme_summative_project/features/account/trust_account_injection.dart';
 import 'package:bookme_summative_project/features/settings/data/settings_local_source.dart';
-import 'package:bookme_summative_project/features/settings/presentation/settings_cubit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-// Walks through the Trust & Account screens the way a user would.
+import 'helpers/app_harness.dart';
+
+// Walks through the signed-in app (all four tabs) the way a user would.
 void main() {
   late SharedPreferences prefs;
 
@@ -21,15 +19,7 @@ void main() {
     tester.view.devicePixelRatio = 2.6;
     addTearDown(tester.view.reset);
 
-    await tester.pumpWidget(
-      MultiRepositoryProvider(
-        providers: inMemoryTrustAccountRepositoryProviders(prefs: prefs),
-        child: BlocProvider(
-          create: (context) => SettingsCubit(context.read())..load(),
-          child: const TrustAccountDemoApp(),
-        ),
-      ),
-    );
+    await tester.pumpWidget(buildTestApp(prefs));
     await tester.pumpAndSettle();
   }
 

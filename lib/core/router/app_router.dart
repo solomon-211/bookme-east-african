@@ -66,16 +66,22 @@ GoRouter createRouter(AuthBloc bloc) {
       }
     },
     routes: [
-      GoRoute(path: AppRoutes.splash, builder: (_, __) => const SplashScreen()),
-      GoRoute(path: AppRoutes.welcome, builder: (_, __) => const WelcomeScreen()),
+      GoRoute(path: AppRoutes.splash, builder: (_, _) => const SplashScreen()),
       GoRoute(
-          path: AppRoutes.phone, builder: (_, __) => const PhoneSignInScreen()),
-      GoRoute(path: AppRoutes.otp, builder: (_, __) => const OtpScreen()),
-      GoRoute(path: AppRoutes.login, builder: (_, __) => const LoginScreen()),
+        path: AppRoutes.welcome,
+        builder: (_, _) => const WelcomeScreen(),
+      ),
       GoRoute(
-          path: AppRoutes.forgot,
-          builder: (_, __) => const ForgotPasswordScreen()),
-      GoRoute(path: AppRoutes.home, builder: (_, __) => const HomeShell()),
+        path: AppRoutes.phone,
+        builder: (_, _) => const PhoneSignInScreen(),
+      ),
+      GoRoute(path: AppRoutes.otp, builder: (_, _) => const OtpScreen()),
+      GoRoute(path: AppRoutes.login, builder: (_, _) => const LoginScreen()),
+      GoRoute(
+        path: AppRoutes.forgot,
+        builder: (_, _) => const ForgotPasswordScreen(),
+      ),
+      GoRoute(path: AppRoutes.home, builder: (_, _) => const HomeShell()),
     ],
   );
 }

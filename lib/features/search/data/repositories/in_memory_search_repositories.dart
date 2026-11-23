@@ -99,8 +99,10 @@ class InMemorySearchRepository implements SearchRepository {
 
 /// [WaitlistRepository] kept in memory, for tests and the offline demo.
 class InMemoryWaitlistRepository implements WaitlistRepository {
-  InMemoryWaitlistRepository({this.userId = 'demo-user', DateTime Function()? clock})
-    : _now = clock ?? DateTime.now;
+  InMemoryWaitlistRepository({
+    this.userId = 'demo-user',
+    DateTime Function()? clock,
+  }) : _now = clock ?? DateTime.now;
 
   final String userId;
   final DateTime Function() _now;

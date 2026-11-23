@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../core/theme/app_theme.dart';
+import '../../../core/theme/app_palette.dart';
 import '../../../core/utils/validators.dart';
 import '../../../core/widgets/app_text_field.dart';
 import '../../../core/widgets/primary_button.dart';
@@ -42,15 +42,16 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text('Reset your password',
-                    style: Theme.of(context)
-                        .textTheme
-                        .headlineSmall
-                        ?.copyWith(fontWeight: FontWeight.w800)),
+                Text(
+                  'Reset your password',
+                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
                 const SizedBox(height: 8),
-                const Text(
+                Text(
                   "Enter your email and we'll send you a link to set a new password.",
-                  style: TextStyle(color: AppColors.muted),
+                  style: TextStyle(color: context.palette.muted),
                 ),
                 const SizedBox(height: 24),
                 AppTextField(

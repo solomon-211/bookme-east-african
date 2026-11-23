@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
@@ -56,10 +57,12 @@ class _BookMeAppState extends State<BookMeApp> {
             if (text == null) return;
             messengerKey.currentState
               ?..hideCurrentSnackBar()
-              ..showSnackBar(SnackBar(
-                content: Text(text),
-                behavior: SnackBarBehavior.floating,
-              ));
+              ..showSnackBar(
+                SnackBar(
+                  content: Text(text),
+                  behavior: SnackBarBehavior.floating,
+                ),
+              );
           },
           child: BlocBuilder<SettingsCubit, SettingsState>(
             buildWhen: (a, b) => a.themeMode != b.themeMode,
@@ -71,6 +74,15 @@ class _BookMeAppState extends State<BookMeApp> {
               themeMode: settings.themeMode,
               scaffoldMessengerKey: messengerKey,
               routerConfig: _router,
+              // Status bar icons follow the theme. The dark Welcome and
+              // Splash screens set their own light icons on top of this.
+              builder: (context, child) =>
+                  AnnotatedRegion<SystemUiOverlayStyle>(
+                    value: Theme.of(context).brightness == Brightness.dark
+                        ? SystemUiOverlayStyle.light
+                        : SystemUiOverlayStyle.dark,
+                    child: child!,
+                  ),
             ),
           ),
         ),

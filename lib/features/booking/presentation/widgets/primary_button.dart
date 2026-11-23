@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:bookme_summative_project/core/theme/app_colors.dart';
+import 'package:bookme_summative_project/core/theme/app_palette.dart';
 
 enum PrimaryButtonStyle { dark, success, outlined }
 
@@ -26,9 +27,14 @@ class PrimaryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final foreground = style == PrimaryButtonStyle.outlined
-        ? AppColors.ink
-        : Colors.white;
+    // Ink in light mode, lime in dark mode (green stays green for "Pay").
+    final palette = context.palette;
+    final success = style == PrimaryButtonStyle.success;
+    final foreground = switch (style) {
+      PrimaryButtonStyle.outlined => palette.text,
+      _ when success => Colors.white,
+      _ => palette.onAccent,
+    };
     final child = loading
         ? SizedBox.square(
             dimension: 22,
@@ -70,9 +76,9 @@ class PrimaryButton extends StatelessWidget {
         style: OutlinedButton.styleFrom(
           minimumSize: size,
           shape: shape,
-          foregroundColor: AppColors.ink,
-          side: const BorderSide(color: AppColors.ink, width: 1.2),
-          backgroundColor: Colors.white,
+          foregroundColor: palette.text,
+          side: BorderSide(color: palette.text, width: 1.2),
+          backgroundColor: palette.card,
         ),
         child: child,
       );
@@ -84,11 +90,9 @@ class PrimaryButton extends StatelessWidget {
         minimumSize: size,
         shape: shape,
         foregroundColor: foreground,
-        backgroundColor: style == PrimaryButtonStyle.success
-            ? AppColors.success
-            : AppColors.ink,
-        disabledBackgroundColor: AppColors.ink.withValues(alpha: 0.35),
-        disabledForegroundColor: Colors.white,
+        backgroundColor: success ? AppColors.success : palette.accent,
+        disabledBackgroundColor: palette.accent.withValues(alpha: 0.35),
+        disabledForegroundColor: palette.onAccent,
       ),
       child: child,
     );

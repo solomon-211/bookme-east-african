@@ -25,8 +25,7 @@ class SearchNavigation {
     return BookingFlow.start(
       context,
       trip: trip.toSummary(),
-      onViewTicket:
-          onViewTicket ?? const TicketsNavigation().openAfterPayment,
+      onViewTicket: onViewTicket ?? const TicketsNavigation().openAfterPayment,
       initialPhone: currentPhone(context),
     );
   }

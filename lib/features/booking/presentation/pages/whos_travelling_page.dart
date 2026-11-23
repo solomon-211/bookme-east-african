@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:bookme_summative_project/core/theme/app_colors.dart';
+import 'package:bookme_summative_project/core/theme/app_palette.dart';
 import 'package:bookme_summative_project/features/booking/domain/entities/passenger.dart';
 import 'package:bookme_summative_project/features/booking/domain/validators/passenger_validators.dart';
 import 'package:bookme_summative_project/features/booking/presentation/booking_flow.dart';
@@ -87,8 +87,9 @@ class _WhosTravellingPageState extends State<WhosTravellingPage> {
 
   void _onPassengerChanged(BuildContext context, PassengerState state) {
     if (state.message != null) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(state.message!)));
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(state.message!)));
       return;
     }
     if (state.status == PassengerFormStatus.saved) {
@@ -223,16 +224,29 @@ class _NationalityField extends StatelessWidget {
       children: [
         Text(
           'Nationality',
-          style: Theme.of(context).textTheme.bodySmall
-              ?.copyWith(color: AppColors.muted),
+          style: Theme.of(
+            context,
+          ).textTheme.bodySmall?.copyWith(color: context.palette.muted),
         ),
         const SizedBox(height: 6),
         DropdownButtonFormField<String>(
           key: const ValueKey('field-nationality'),
           initialValue: value,
           isExpanded: true,
-          hint: const Text('Choose nationality'),
-          decoration: bookingInputDecoration(prefixIcon: Icons.flag_outlined),
+          hint: Text(
+            'Choose nationality',
+            style: bookingInputTextStyle(context).copyWith(
+              color: context.palette.muted,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+          style: bookingInputTextStyle(context),
+          dropdownColor: context.palette.card,
+          iconEnabledColor: context.palette.muted,
+          decoration: bookingInputDecoration(
+            context,
+            prefixIcon: Icons.flag_outlined,
+          ),
           items: [
             for (final country in WhosTravellingPage.nationalities)
               DropdownMenuItem(value: country, child: Text(country)),
@@ -282,7 +296,7 @@ class _HoldFailed extends StatelessWidget {
       ),
       children: [
         const SizedBox(height: 32),
-        const Icon(Icons.event_seat_outlined, size: 56, color: AppColors.muted),
+        Icon(Icons.event_seat_outlined, size: 56, color: context.palette.muted),
         const SizedBox(height: 16),
         Text(
           message ?? 'We couldn\'t hold a seat on this bus.',

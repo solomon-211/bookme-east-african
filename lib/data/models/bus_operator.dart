@@ -32,14 +32,20 @@ class BusOperator extends Equatable {
   }
 
   Map<String, dynamic> toMap() => {
-        'name': name,
-        'contactPhone': contactPhone,
-        'rating': rating,
-        'isVerified': isVerified,
-        'refundPolicy': refundPolicy,
-      };
+    'name': name,
+    'contactPhone': contactPhone,
+    'rating': rating,
+    'isVerified': isVerified,
+    'refundPolicy': refundPolicy,
+  };
 
   @override
-  List<Object?> get props =>
-      [id, name, contactPhone, rating, isVerified, refundPolicy];
+  List<Object?> get props => [
+    id,
+    name,
+    contactPhone,
+    rating,
+    isVerified,
+    refundPolicy,
+  ];
 }
